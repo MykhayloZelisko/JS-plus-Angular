@@ -7,6 +7,8 @@ import {
   platformBrowserDynamicTesting
 } from '@angular/platform-browser-dynamic/testing';
 
+/* eslint-disable no-unused-vars */
+
 declare const require: {
   context(path: string, deep?: boolean, filter?: RegExp): {
     keys(): string[];
@@ -23,3 +25,5 @@ getTestBed().initTestEnvironment(
 const context = require.context('./', true, /\.spec\.ts$/);
 // And load the modules.
 context.keys().map(context);
+
+/* eslint-enable no-unused-vars */
