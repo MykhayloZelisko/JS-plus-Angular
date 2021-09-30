@@ -1,0 +1,20 @@
+.logo {
+  display: flex;
+  align-items: center;
+  color: #ffffff;
+
+  &-text {
+    font-size: 18px;
+    font-family: "SourceSansPro", sans-serif;
+    font-weight: 700;
+    text-transform: uppercase;
+  }
+
+  &-icon {
+    font-size: 30px;
+    padding-right: 5px;
+    background: linear-gradient(to bottom, #0079AD, #B4D084);
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+}

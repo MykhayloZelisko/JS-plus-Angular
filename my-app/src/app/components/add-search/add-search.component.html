@@ -1,1 +1,9 @@
-<p>add-search works!</p>
+<div class="container">
+  <div class="search-wrapper">
+    <input type="text" class="search-text" placeholder="Text to search" [(ngModel)]="value">
+    <button class="search-btn" (click)="search()">Search</button>
+  </div>
+  <div class="add-btn-wrapper">
+    <button class="add-btn"><span class="material-icons add-btn-icon">add_circle_outline</span>Add course</button>
+  </div>
+</div>

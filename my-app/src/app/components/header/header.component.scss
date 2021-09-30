@@ -1,0 +1,42 @@
+.container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #303240;
+  padding: 20px 85px;
+}
+
+.login {
+  display: flex;
+  align-items: center;
+  font-family: "SourceSansPro", sans-serif;
+
+  &-info {
+    display: flex;
+    align-items: center;
+    color: #ffffff;
+    font-size: 14px;
+  }
+
+  &-icon {
+    font-size: 20px;
+    padding-right: 5px;
+  }
+}
+
+.logout-btn {
+  display: flex;
+  align-items: center;
+  margin-left: 20px;
+  padding: 5px 20px;
+  background-color: transparent;
+  border: none;
+  color: #ffffff;
+  font-family: "SourceSansPro", sans-serif;
+  font-size: 14px;
+  cursor: pointer;
+
+  &:hover {
+    background-color: darken(#303240, 5);
+  }
+}

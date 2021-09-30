@@ -1,1 +1,8 @@
-<p>courses works!</p>
+<app-breadcrumbs></app-breadcrumbs>
+<div class="container">
+  <app-add-search></app-add-search>
+  <div *ngFor="let course of coursesList; trackBy: trackByIndex">
+    <app-course-item [course]="course" (delete)="deleteCourse(course)"></app-course-item>
+  </div>
+  <button class="btn-more" (click)="loadCourses()">Load more</button>
+</div>
