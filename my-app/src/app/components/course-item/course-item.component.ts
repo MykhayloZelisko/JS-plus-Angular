@@ -20,4 +20,7 @@ export class CourseItemComponent implements OnInit, OnChanges {
     console.log('onChanges');
   }
 
+  editCourse(): void {
+    console.log(`edit course ${this.course.id}`);
+  }
 }
