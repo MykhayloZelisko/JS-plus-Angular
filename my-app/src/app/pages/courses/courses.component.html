@@ -1,8 +1,21 @@
 <app-breadcrumbs></app-breadcrumbs>
 <div class="container">
-  <app-add-search></app-add-search>
-  <div *ngFor="let course of coursesList; trackBy: trackByIndex">
-    <app-course-item [course]="course" (delete)="deleteCourse(course)"></app-course-item>
+  <app-add-search
+    (onSearch)="filterCourse($event)"
+  ></app-add-search>
+  <div *ngIf="filteredList.length !== 0; else elseBlock">
+    <div *ngFor="let course of filteredList | orderBy : 'creationDate' : 'asc'; trackBy: trackByIndex">
+      <app-course-item
+        class="course"
+        [newCourse]="course.creationDate"
+        [ngClass]="{'top-rated': course.topRated}"
+        [course]="course"
+        (delete)="deleteCourse(course)">
+      </app-course-item>
+    </div>
+    <button class="btn-more" (click)="loadCourses()">Load more</button>
   </div>
-  <button class="btn-more" (click)="loadCourses()">Load more</button>
+  <ng-template #elseBlock>
+    <p class="message">No data. Feel free to add new course</p>
+  </ng-template>
 </div>

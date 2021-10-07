@@ -11,6 +11,10 @@ import { LogoComponent } from './components/logo/logo.component';
 import { CoursesComponent } from './pages/courses/courses.component';
 import { CourseItemComponent } from './components/course-item/course-item.component';
 import { FormsModule } from '@angular/forms';
+import { NewCourseDirective } from './directives/new-course.directive';
+import { OrderByPipe } from './pipes/order-by.pipe';
+import { FilterPipe } from './pipes/filter.pipe';
+import { DurationPipe } from './pipes/duration.pipe';
 
 @NgModule({
   declarations: [
@@ -21,14 +25,20 @@ import { FormsModule } from '@angular/forms';
     CourseItemComponent,
     FooterComponent,
     LogoComponent,
-    CoursesComponent
+    CoursesComponent,
+    NewCourseDirective,
+    OrderByPipe,
+    FilterPipe,
+    DurationPipe
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     FormsModule
   ],
-  providers: [],
+  providers: [
+    FilterPipe
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

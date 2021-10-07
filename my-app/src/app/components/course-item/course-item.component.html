@@ -1,22 +1,20 @@
-<div class="course">
-  <div class="course-info">
-    <h2 class="course-title">{{course.title}}</h2>
-    <p class="course-text">{{course.description}}</p>
+<div class="course-info">
+  <h2 class="course-title">{{course.title | uppercase}} <span class="material-icons course-rating" *ngIf="course.topRated">grade</span></h2>
+  <p class="course-text">{{course.description}}</p>
+</div>
+<div class="course-time-btns">
+  <div class="course-time">
+    <div class="course-duration">
+      <span class="material-icons icon">access_time</span>
+      <span>{{course.duration | duration}}</span>
+    </div>
+    <div class="course-duration">
+      <span class="material-icons icon">calendar_today</span>
+      <span>{{course.creationDate | date: 'dd MMM y'}}</span>
+    </div>
   </div>
-  <div class="course-time-btns">
-    <div class="course-time">
-      <div class="course-duration">
-        <span class="material-icons icon">access_time</span>
-        <span>{{(course.duration - course.duration % 60) / 60}}&nbsp;h&nbsp;{{course.duration % 60}}&nbsp;min</span>
-      </div>
-      <div class="course-duration">
-        <span class="material-icons icon">calendar_today</span>
-        <span>{{course.creationDate}}</span>
-      </div>
-    </div>
-    <div class="btns-wrapper">
-      <button class="btn" (click)="editCourse()"><span class="material-icons icon">create</span>Edit</button>
-      <button class="btn" (click)="delete.emit()"><span class="material-icons icon">delete</span>Delete</button>
-    </div>
+  <div class="btns-wrapper">
+    <button class="btn" (click)="editCourse()"><span class="material-icons icon">create</span>Edit</button>
+    <button class="btn" (click)="delete.emit()"><span class="material-icons icon">delete</span>Delete</button>
   </div>
 </div>
