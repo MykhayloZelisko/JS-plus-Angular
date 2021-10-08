@@ -9,6 +9,10 @@ export class NewCourseDirective implements OnChanges {
   constructor(private _el: ElementRef) {}
 
   ngOnChanges(): void {
+    this.updateElementBorderStyle();
+  }
+
+  private updateElementBorderStyle(): void {
     const msInTwoWeeks = 1209600000;
 
     const currentDate = Date.now();
