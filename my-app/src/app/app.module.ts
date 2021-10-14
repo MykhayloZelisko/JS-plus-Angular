@@ -15,6 +15,8 @@ import { NewCourseDirective } from './directives/new-course.directive';
 import { OrderByPipe } from './pipes/order-by.pipe';
 import { FilterPipe } from './pipes/filter.pipe';
 import { DurationPipe } from './pipes/duration.pipe';
+import { LoginModule } from './login/login.module';
+import { IfAuthenticatedDirective } from './directives/if-authenticated.directive';
 
 @NgModule({
   declarations: [
@@ -29,12 +31,14 @@ import { DurationPipe } from './pipes/duration.pipe';
     NewCourseDirective,
     OrderByPipe,
     FilterPipe,
-    DurationPipe
+    DurationPipe,
+    IfAuthenticatedDirective
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
-    FormsModule
+    FormsModule,
+    LoginModule
   ],
   providers: [
     FilterPipe

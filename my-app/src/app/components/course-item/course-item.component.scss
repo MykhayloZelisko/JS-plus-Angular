@@ -23,7 +23,7 @@
 
     &-btns {
       width: 18%;
-      min-width: 200px;
+      min-width: 210px;
     }
   }
 
@@ -35,7 +35,7 @@
 	  font-family: "SourceSansPro", sans-serif;
   }
 
-  &-duration {
+  &-duration:first-child {
     padding-right: 20px;
   }
 

@@ -1,7 +1,8 @@
 <div class="container">
   <app-logo></app-logo>
-  <div class="login">
+  <div class="login" *ifAuthenticated="isAuthenticated">
     <p class="login-info"><span class="material-icons login-icon">person</span>User Login</p>
-    <button class="logout-btn"><span class="material-icons login-icon">logout</span>Log out</button>
+    <button class="logout-btn" (click)="logout()"><span class="material-icons login-icon">logout</span>Log out</button>
   </div>
 </div>
+<app-breadcrumbs *ifAuthenticated="isAuthenticated"></app-breadcrumbs>

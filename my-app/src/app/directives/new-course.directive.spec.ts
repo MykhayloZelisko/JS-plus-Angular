@@ -9,7 +9,7 @@ describe('NewCourseDirective', () => {
         border: null
       }
     }
-  } as ElementRef;
+  };
   const directive = new NewCourseDirective(elMock);
 
   it('should return blue border', () => {
