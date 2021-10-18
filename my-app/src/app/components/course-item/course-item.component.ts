@@ -9,7 +9,6 @@ import { Course } from 'src/app/interfaces/course';
 export class CourseItemComponent implements OnInit, OnChanges {
   @Input() public course: Course;
   @Output() public delete: EventEmitter<number> = new EventEmitter();
-  @Output() public getTitle: EventEmitter<string> = new EventEmitter();
 
   constructor() { }
 

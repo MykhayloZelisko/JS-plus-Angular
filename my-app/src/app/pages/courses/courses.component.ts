@@ -40,10 +40,12 @@ export class CoursesComponent implements OnInit {
     this.filteredList = this._filter.transform(this.coursesList, value);
   }
 
-  confirmDelete(needDelete: boolean): void {
-    if (needDelete) {
-      this.deleteCourse();
-    }
+  confirmDelete(): void {
+    this.deleteCourse();
+    this.confirmDialogConfig = { isVisible: false, id: null, title: null };
+  }
+
+  cancelDelete(): void {
     this.confirmDialogConfig = { isVisible: false, id: null, title: null };
   }
 
