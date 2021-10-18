@@ -33,7 +33,9 @@ export class CoursesComponent implements OnInit {
 
   openConfirmDialog(id: number): void {
     const currentCourse = this.filteredList.find(course => course.id === id);
-    this.confirmDialogConfig = { isVisible: true, id: currentCourse.id, title: currentCourse.title };
+    if (currentCourse) {
+      this.confirmDialogConfig = { isVisible: true, id: currentCourse.id, title: currentCourse.title };
+    }
   }
 
   filterCourse(value: string): void {
