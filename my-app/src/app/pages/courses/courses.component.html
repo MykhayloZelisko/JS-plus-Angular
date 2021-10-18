@@ -1,4 +1,3 @@
-<app-breadcrumbs></app-breadcrumbs>
 <div class="container">
   <app-add-search
     (onSearch)="filterCourse($event)"
@@ -10,7 +9,7 @@
         [newCourse]="course.creationDate"
         [ngClass]="{'top-rated': course.topRated}"
         [course]="course"
-        (delete)="deleteCourse(course)">
+        (delete)="openConfirmDialog($event)">
       </app-course-item>
     </div>
     <button class="btn-more" (click)="loadCourses()">Load more</button>
@@ -18,4 +17,22 @@
   <ng-template #elseBlock>
     <p class="message">No data. Feel free to add new course</p>
   </ng-template>
+</div>
+
+<div class="popup-wrapper" *ngIf="confirmDialogConfig.isVisible">
+  <div class="popup">
+    <div class="popup-header">
+      <h3 class="popup-title">Delete course?</h3>
+      <span class="material-icons close-icon" (click)="cancelDelete()">close</span>
+    </div>
+    <hr>
+    <div class="popup-body">
+      <p class="popup-text">Are you sure you want to delete <br> {{confirmDialogConfig.title}}?</p>
+    </div>
+    <hr>
+    <div class="popup-footer">
+      <button class="btn btn-cancel" (click)="cancelDelete()">Cancel</button>
+      <button class="btn btn-delete" (click)="confirmDelete()">Yes, delete</button>
+    </div>
+  </div>
 </div>

@@ -8,7 +8,7 @@ import { Course } from 'src/app/interfaces/course';
 })
 export class CourseItemComponent implements OnInit, OnChanges {
   @Input() public course: Course;
-  @Output() public delete: EventEmitter<void> = new EventEmitter();
+  @Output() public delete: EventEmitter<number> = new EventEmitter();
 
   constructor() { }
 
@@ -22,5 +22,9 @@ export class CourseItemComponent implements OnInit, OnChanges {
 
   editCourse(): void {
     console.log(`edit course ${this.course.id}`);
+  }
+
+  deleteCourse(): void {
+    this.delete.emit(this.course.id);
   }
 }
