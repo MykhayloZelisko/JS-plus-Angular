@@ -1,0 +1,38 @@
+.course {
+  &-label {
+    display: block;
+    line-height: 24px;
+	  color: #474A59;
+	  font-size: 14px;
+	  font-family: "SourceSansPro", sans-serif;
+	  font-weight: 600;
+  }
+
+  &-input {
+    margin: 8px 0 12px;
+    padding: 9px 12px;
+    border-radius: 3px;
+	  border: 1px solid #CED0DB;
+	  box-sizing: border-box;
+	  color: #474A59;
+	  font-size: 14px;
+    font-family: "SourceSansPro", sans-serif;
+    width: 100%;
+  }
+
+  &-authors {
+    max-width: 500px;
+    position: relative;
+
+    &::after {
+      content: '* required';
+      position: absolute;
+      top: 0;
+      right: 0;
+      line-height: 24px;
+	    color: #474A59;
+	    font-size: 12px;
+	    font-family: "SourceSansPro", sans-serif;
+    }
+  }
+}
