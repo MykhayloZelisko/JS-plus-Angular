@@ -104,7 +104,8 @@ export class CoursesService {
 
   createCourse(data: CourseData): void {
     const id = this.generateId();
-    const newCourse = { id, ...data };
+    const topRated = false;
+    const newCourse = { id, topRated, ...data };
     this.getCourseList().push(newCourse);
   }
 
@@ -118,7 +119,6 @@ export class CoursesService {
     course.description = data.description;
     course.duration = data.duration;
     course.title = data.title;
-    course.topRated = data.topRated;
   }
 
   deleteCourse(id: number): void {

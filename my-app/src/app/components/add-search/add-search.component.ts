@@ -1,4 +1,5 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-add-search',
@@ -10,7 +11,7 @@ export class AddSearchComponent implements OnInit {
 
   public value: string;
 
-  constructor() { }
+  constructor(private _router: Router) { }
 
   ngOnInit(): void {
   }
@@ -19,4 +20,7 @@ export class AddSearchComponent implements OnInit {
     this.onSearch.emit(this.value);
   }
 
+  newCourse(): void {
+    this._router.navigateByUrl('/courses/new');
+  }
 }

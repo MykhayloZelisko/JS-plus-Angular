@@ -9,7 +9,8 @@
         [newCourse]="course.creationDate"
         [ngClass]="{'top-rated': course.topRated}"
         [course]="course"
-        (delete)="openConfirmDialog($event)">
+        (delete)="openConfirmDialog($event)"
+        (edit)="editCourse($event)">
       </app-course-item>
     </div>
     <button class="btn-more" (click)="loadCourses()">Load more</button>
