@@ -55,4 +55,8 @@ export class CoursesComponent implements OnInit {
     const id = this.confirmDialogConfig.id;
     this._coursesService.deleteCourse(id);
   }
+
+  editCourse(course: Course): void {
+    console.log(`edit course ${course.title}`);
+  }
 }

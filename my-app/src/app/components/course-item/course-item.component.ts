@@ -1,27 +1,24 @@
-import { Component, Input, OnInit, Output, EventEmitter, OnChanges } from '@angular/core';
+import { Component, Input, OnInit, Output, EventEmitter, ChangeDetectionStrategy } from '@angular/core';
 import { Course } from 'src/app/interfaces/course';
 
 @Component({
   selector: 'app-course-item',
   templateUrl: './course-item.component.html',
-  styleUrls: ['./course-item.component.scss']
+  styleUrls: ['./course-item.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class CourseItemComponent implements OnInit, OnChanges {
+export class CourseItemComponent implements OnInit {
   @Input() public course: Course;
   @Output() public delete: EventEmitter<number> = new EventEmitter();
+  @Output() public edit: EventEmitter<Course> = new EventEmitter();
 
   constructor() { }
 
   ngOnInit(): void {
-    console.log('onInit');
-  }
-
-  ngOnChanges(): void {
-    console.log('onChanges');
   }
 
   editCourse(): void {
-    console.log(`edit course ${this.course.id}`);
+    this.edit.emit(this.course);
   }
 
   deleteCourse(): void {

@@ -14,9 +14,10 @@ import { FormsModule } from '@angular/forms';
 import { NewCourseDirective } from './directives/new-course.directive';
 import { OrderByPipe } from './pipes/order-by.pipe';
 import { FilterPipe } from './pipes/filter.pipe';
-import { DurationPipe } from './pipes/duration.pipe';
 import { LoginModule } from './login/login.module';
 import { IfAuthenticatedDirective } from './directives/if-authenticated.directive';
+import { SharedModule } from './shared/shared.module';
+import { AddEditCourseModule } from './add-edit-course/add-edit-course.module';
 
 @NgModule({
   declarations: [
@@ -31,14 +32,15 @@ import { IfAuthenticatedDirective } from './directives/if-authenticated.directiv
     NewCourseDirective,
     OrderByPipe,
     FilterPipe,
-    DurationPipe,
     IfAuthenticatedDirective
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     FormsModule,
-    LoginModule
+    LoginModule,
+    SharedModule,
+    AddEditCourseModule
   ],
   providers: [
     FilterPipe

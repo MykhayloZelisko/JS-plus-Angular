@@ -3,11 +3,12 @@ export interface CourseData {
   creationDate: string,
   duration: number,
   description: string,
-  topRated: boolean
+  authors?: string[]
 }
 
 export interface Course extends CourseData {
-  id: number
+  id: number,
+  topRated: boolean
 }
 
 export interface ConfigDeleteCourse {
