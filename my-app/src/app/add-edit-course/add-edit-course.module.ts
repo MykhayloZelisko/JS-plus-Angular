@@ -7,8 +7,6 @@ import { CourseDurationComponent } from './course-duration/course-duration.compo
 import { CourseDateComponent } from './course-date/course-date.component';
 import { CourseAuthorsComponent } from './course-authors/course-authors.component';
 
-
-
 @NgModule({
   declarations: [
     AddEditCourseComponent,
