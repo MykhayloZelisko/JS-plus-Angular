@@ -1,3 +1,6 @@
 <div class="container">
-  <p>Courses</p>
+  <p *ngIf="pathLength === 2; else elseBlock">{{firstPathFragment}}</p>
+  <ng-template #elseBlock>
+    <p><a class="link" routerLink="/courses">{{firstPathFragment}}</a> <span class="slash"> / </span> {{secondPathFragment}}</p>
+  </ng-template>
 </div>

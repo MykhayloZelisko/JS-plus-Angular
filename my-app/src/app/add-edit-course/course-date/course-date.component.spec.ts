@@ -10,10 +10,10 @@ describe('CourseDateComponent', () => {
     await TestBed.configureTestingModule({
       declarations: [ CourseDateComponent ]
     })
-    .compileComponents();
+      .compileComponents();
   });
 
-  beforeEach(() => {
+  beforeEach( () => {
     fixture = TestBed.createComponent(CourseDateComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();

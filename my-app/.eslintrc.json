@@ -16,7 +16,6 @@
     "indent": ["warn", 2],
     "quotes": [ "warn", "single", { "avoidEscape": true, "allowTemplateLiterals": true }],
     "semi": ["error", "always"],
-    "no-extra-parens": ["error", "all"],
     "array-callback-return": "error",
     "default-case": "warn",
     "guard-for-in": "warn",

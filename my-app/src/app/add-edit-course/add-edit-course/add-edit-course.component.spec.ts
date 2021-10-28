@@ -10,10 +10,10 @@ describe('AddEditCourseComponent', () => {
     await TestBed.configureTestingModule({
       declarations: [ AddEditCourseComponent ]
     })
-    .compileComponents();
+      .compileComponents();
   });
 
-  beforeEach(() => {
+  beforeEach( () => {
     fixture = TestBed.createComponent(AddEditCourseComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();

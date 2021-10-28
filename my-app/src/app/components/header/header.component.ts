@@ -20,6 +20,5 @@ export class HeaderComponent implements OnInit, DoCheck {
 
   logout(): void {
     this._authService.logout();
-    console.log('Logout');
   }
 }

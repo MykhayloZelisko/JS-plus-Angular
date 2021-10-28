@@ -10,10 +10,10 @@ describe('CourseDurationComponent', () => {
     await TestBed.configureTestingModule({
       declarations: [ CourseDurationComponent ]
     })
-    .compileComponents();
+      .compileComponents();
   });
 
-  beforeEach(() => {
+  beforeEach( () => {
     fixture = TestBed.createComponent(CourseDurationComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();

@@ -1,4 +1,4 @@
-import { Course } from '../interfaces/course';
+import { Course } from '../../interfaces/course';
 import { OrderByPipe } from './order-by.pipe';
 
 describe('OrderByPipe', () => {

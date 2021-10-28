@@ -1,14 +1,26 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { AddEditCourseComponent } from './add-edit-course/add-edit-course/add-edit-course.component';
-import { LoginComponent } from './login/login/login.component';
-import { CoursesComponent } from './pages/courses/courses.component';
+import { AuthGuard } from './guards/auth.guard';
 
 const routes: Routes = [
-  { path: '', redirectTo: '/courses', pathMatch: 'full' },
-  { path: 'courses/new', component: AddEditCourseComponent },
-  { path: 'courses', component: CoursesComponent },
-  { path: 'login', component: LoginComponent }
+  {
+    path: '',
+    redirectTo: '/courses',
+    pathMatch: 'full'
+  },
+  {
+    path: 'courses',
+    loadChildren: () => import('./courses/courses.module').then(m => m.CoursesModule),
+    canActivate: [AuthGuard],
+  },
+  {
+    path: 'login',
+    loadChildren: () => import('./login/login.module').then(m => m.LoginModule),
+  },
+  {
+    path: '**',
+    loadChildren: () => import('./page-not-found/page-not-found.module').then(m => m.PageNotFoundModule)
+  }
 ];
 
 @NgModule({

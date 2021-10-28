@@ -28,6 +28,8 @@ export class AuthService {
   logout(): void {
     localStorage.removeItem('user');
     localStorage.removeItem('token');
+
+    this._router.navigateByUrl('/login');
   }
 
   isAuthenticated(): boolean {

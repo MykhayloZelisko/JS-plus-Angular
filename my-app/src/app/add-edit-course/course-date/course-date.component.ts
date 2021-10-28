@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 
 @Component({
   selector: 'app-course-date',
@@ -6,11 +6,16 @@ import { Component, Input, OnInit } from '@angular/core';
   styleUrls: ['./course-date.component.scss']
 })
 export class CourseDateComponent implements OnInit {
-  @Input() creationDate: string;
+  @ViewChild('creationDateField') creationDateField: ElementRef;
+  @Input() public creationDate: string;
+  @Output() public getDateEvent: EventEmitter<string> = new EventEmitter();
 
   constructor() { }
 
   ngOnInit(): void {
   }
 
+  getDate(): void {
+    this.getDateEvent.emit(this.creationDateField.nativeElement.value);
+  }
 }

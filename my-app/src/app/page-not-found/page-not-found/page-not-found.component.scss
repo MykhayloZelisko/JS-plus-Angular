@@ -1,0 +1,44 @@
+.not-found {
+  padding: 0 85px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  text-align: center;
+
+  &-img {
+    max-width: 100%;
+  }
+
+  &-text {
+    color: #333333;
+	  font-family: "SourceSansPro", sans-serif;
+    margin-bottom: 24px;
+    font-size: 20px;
+  }
+
+  &-title {
+    color: #333333;
+	  font-size: 50px;
+	  font-family: "SourceSansPro", sans-serif;
+	  font-weight: 600;
+    margin-bottom: 24px;
+  }
+
+  &-btn {
+    line-height: 24px;
+    font-size: 14px;
+    font-family: "SourceSansPro", sans-serif;
+    padding: 6px 12px;
+    border-radius: 3px;
+    cursor: pointer;
+    border: none;
+    background-color: #67A300;
+    color: #ffffff;
+
+    &:hover {
+      background-color: darken(#67A300, 5);
+    }
+  }
+}

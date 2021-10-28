@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { ConfigDeleteCourse, Course } from 'src/app/interfaces/course';
-import { FilterPipe } from 'src/app/pipes/filter.pipe';
+import { FilterPipe } from 'src/app/courses/pipes/filter.pipe';
 import { CoursesService } from 'src/app/services/courses.service';
 
 @Component({
@@ -15,7 +16,8 @@ export class CoursesComponent implements OnInit {
 
   constructor(
     private _filter: FilterPipe,
-    private _coursesService: CoursesService
+    private _coursesService: CoursesService,
+    private _router: Router
   ) { }
 
   ngOnInit(): void {
@@ -57,6 +59,6 @@ export class CoursesComponent implements OnInit {
   }
 
   editCourse(course: Course): void {
-    console.log(`edit course ${course.title}`);
+    this._router.navigateByUrl(`/courses/${course.id}`);
   }
 }
