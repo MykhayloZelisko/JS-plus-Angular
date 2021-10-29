@@ -39,7 +39,6 @@ export class CourseFormComponent implements OnInit {
       title: this.titleField.nativeElement.value,
       description: this.descriptionField.nativeElement.value
     };
-    console.log(this.newData);
     this.saveEvent.emit(this.newData);
   }
 }
