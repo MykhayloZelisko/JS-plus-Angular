@@ -11,12 +11,12 @@ const routes: Routes = [
   },
   {
     path: 'new',
-    loadChildren: () => import('../add-edit-course/add-edit-course.module').then(m => m.AddEditCourseModule),
+    loadChildren: () => import('../new-course/new-course.module').then(m => m.NewCourseModule),
     canActivate: [AuthGuard]
   },
   {
     path: ':id',
-    loadChildren: () => import('../add-edit-course/add-edit-course.module').then(m => m.AddEditCourseModule),
+    loadChildren: () => import('../edit-course/edit-course.module').then(m => m.EditCourseModule),
     canActivate: [AuthGuard]
   },
 ];

@@ -11,9 +11,10 @@ import { FormsModule } from '@angular/forms';
 import { LoginModule } from './login/login.module';
 import { IfAuthenticatedDirective } from './directives/if-authenticated.directive';
 import { SharedModule } from './shared/shared.module';
-import { AddEditCourseModule } from './add-edit-course/add-edit-course.module';
 import { AuthGuard } from './guards/auth.guard';
 import { CoursesModule } from './courses/courses.module';
+import { NewCourseModule } from './new-course/new-course.module';
+import { EditCourseModule } from './edit-course/edit-course.module';
 
 @NgModule({
   declarations: [
@@ -30,8 +31,9 @@ import { CoursesModule } from './courses/courses.module';
     FormsModule,
     LoginModule,
     SharedModule,
-    AddEditCourseModule,
-    CoursesModule
+    CoursesModule,
+    NewCourseModule,
+    EditCourseModule
   ],
   providers: [
     AuthGuard

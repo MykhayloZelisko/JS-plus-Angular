@@ -1,0 +1,35 @@
+<div class="course">
+  <div class="course-field">
+    <label class="course-label" for="#title">Title:</label>
+    <input
+      #titleField
+      type="text"
+      class="course-input"
+      name="title"
+      placeholder="Text input"
+      [value]="data.title">
+  </div>
+  <div class="course-field">
+    <label class="course-label" for="#description">Description:</label>
+    <textarea
+      #descriptionField
+      class="course-description"
+      name="description"
+      placeholder="Add description"
+      [value]="data.description">
+    </textarea>
+  </div>
+  <app-course-date
+    [creationDate]="data.creationDate"
+    (setDateEvent)="setDate($event)">
+  </app-course-date>
+  <app-course-duration
+    [duration]="data.duration"
+    (setDurationEvent)="setDuration($event)">
+  </app-course-duration>
+  <app-course-authors></app-course-authors>
+  <div class="buttons">
+    <button class="btn btn-cancel" (click)="cancel()">Cancel</button>
+    <button class="btn btn-save" (click)="saveCourse()">Save</button>
+  </div>
+</div>

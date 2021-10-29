@@ -7,14 +7,14 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 })
 export class CourseDurationComponent implements OnInit {
   @Input() public duration: number;
-  @Output() public getDurationEvent: EventEmitter<number> = new EventEmitter();
+  @Output() public setDurationEvent: EventEmitter<number> = new EventEmitter();
 
   constructor() { }
 
   ngOnInit(): void {
   }
 
-  getDuration(): void {
-    this.getDurationEvent.emit(this.duration);
+  setDuration(): void {
+    this.setDurationEvent.emit(this.duration);
   }
 }

@@ -1,0 +1,8 @@
+<div class="container">
+  <h3 class="course-header">Edit course</h3>
+  <app-course-form
+    [data]="data"
+    (cancelEvent)="cancel()"
+    (saveEvent)="saveCourse($event)"
+  ></app-course-form>
+</div>

@@ -8,14 +8,14 @@ import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild }
 export class CourseDateComponent implements OnInit {
   @ViewChild('creationDateField') creationDateField: ElementRef;
   @Input() public creationDate: string;
-  @Output() public getDateEvent: EventEmitter<string> = new EventEmitter();
+  @Output() public setDateEvent: EventEmitter<string> = new EventEmitter();
 
   constructor() { }
 
   ngOnInit(): void {
   }
 
-  getDate(): void {
-    this.getDateEvent.emit(this.creationDateField.nativeElement.value);
+  setDate(): void {
+    this.setDateEvent.emit(this.creationDateField.nativeElement.value);
   }
 }
