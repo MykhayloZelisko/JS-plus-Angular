@@ -13,16 +13,12 @@ export class CourseFormComponent implements OnInit {
   @Output() public cancelEvent: EventEmitter<null> = new EventEmitter();
   @Output() public saveEvent: EventEmitter<CourseData> = new EventEmitter();
 
-  public newData: CourseData = {
-    title: null,
-    description: null,
-    duration: null,
-    creationDate: null
-  };
+  public newData: CourseData;
 
   constructor() { }
 
   ngOnInit(): void {
+    this.newData = this.data;
   }
 
   cancel(): void {
@@ -43,6 +39,7 @@ export class CourseFormComponent implements OnInit {
       title: this.titleField.nativeElement.value,
       description: this.descriptionField.nativeElement.value
     };
+    console.log(this.newData);
     this.saveEvent.emit(this.newData);
   }
 }
