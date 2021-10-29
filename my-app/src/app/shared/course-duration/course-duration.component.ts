@@ -1,9 +1,10 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 
 @Component({
   selector: 'app-course-duration',
   templateUrl: './course-duration.component.html',
-  styleUrls: ['./course-duration.component.scss']
+  styleUrls: ['./course-duration.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class CourseDurationComponent implements OnInit {
   @Input() public duration: number;

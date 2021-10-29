@@ -1,9 +1,19 @@
-import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  ElementRef,
+  EventEmitter,
+  Input,
+  OnInit,
+  Output,
+  ViewChild
+} from '@angular/core';
 
 @Component({
   selector: 'app-course-date',
   templateUrl: './course-date.component.html',
-  styleUrls: ['./course-date.component.scss']
+  styleUrls: ['./course-date.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class CourseDateComponent implements OnInit {
   @ViewChild('creationDateField') creationDateField: ElementRef;

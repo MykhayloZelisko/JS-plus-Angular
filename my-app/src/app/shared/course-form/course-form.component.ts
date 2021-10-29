@@ -1,10 +1,18 @@
-import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy,
+  Component,
+  ElementRef,
+  EventEmitter,
+  Input, OnInit,
+  Output,
+  ViewChild
+} from '@angular/core';
 import { CourseData } from 'src/app/interfaces/course';
 
 @Component({
   selector: 'app-course-form',
   templateUrl: './course-form.component.html',
-  styleUrls: ['./course-form.component.scss']
+  styleUrls: ['./course-form.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class CourseFormComponent implements OnInit {
   @ViewChild('titleField') titleField: ElementRef;
