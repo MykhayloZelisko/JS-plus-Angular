@@ -1,10 +1,13 @@
 .course {
-  padding: 24px 24px 32px;
-  max-width: 730px;
-  margin: 0 auto;
   background-color: #ffffff;
-  border-radius: 6px;
-	box-shadow: 0 1px 2px 0 #1d1e261a, 0 2px 10px 0 #1d1e2626;
+
+  &-header {
+    color: #333333;
+    font-size: 24px;
+    font-family: "SourceSansPro", sans-serif;
+    font-weight: 600;
+    margin-bottom: 24px;
+  }
 
   &-field {
     position: relative;
