@@ -5,33 +5,24 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { HeaderComponent } from './components/header/header.component';
 import { BreadcrumbsComponent } from './components/breadcrumbs/breadcrumbs.component';
-import { AddSearchComponent } from './components/add-search/add-search.component';
 import { FooterComponent } from './components/footer/footer.component';
 import { LogoComponent } from './components/logo/logo.component';
-import { CoursesComponent } from './pages/courses/courses.component';
-import { CourseItemComponent } from './components/course-item/course-item.component';
 import { FormsModule } from '@angular/forms';
-import { NewCourseDirective } from './directives/new-course.directive';
-import { OrderByPipe } from './pipes/order-by.pipe';
-import { FilterPipe } from './pipes/filter.pipe';
 import { LoginModule } from './login/login.module';
 import { IfAuthenticatedDirective } from './directives/if-authenticated.directive';
 import { SharedModule } from './shared/shared.module';
-import { AddEditCourseModule } from './add-edit-course/add-edit-course.module';
+import { AuthGuard } from './guards/auth.guard';
+import { CoursesModule } from './courses/courses.module';
+import { NewCourseModule } from './new-course/new-course.module';
+import { EditCourseModule } from './edit-course/edit-course.module';
 
 @NgModule({
   declarations: [
     AppComponent,
     HeaderComponent,
     BreadcrumbsComponent,
-    AddSearchComponent,
-    CourseItemComponent,
     FooterComponent,
     LogoComponent,
-    CoursesComponent,
-    NewCourseDirective,
-    OrderByPipe,
-    FilterPipe,
     IfAuthenticatedDirective
   ],
   imports: [
@@ -40,10 +31,12 @@ import { AddEditCourseModule } from './add-edit-course/add-edit-course.module';
     FormsModule,
     LoginModule,
     SharedModule,
-    AddEditCourseModule
+    CoursesModule,
+    NewCourseModule,
+    EditCourseModule
   ],
   providers: [
-    FilterPipe
+    AuthGuard
   ],
   bootstrap: [AppComponent]
 })

@@ -1,0 +1,14 @@
+<div class="course-duration-wrapper">
+  <div class="course-duration">
+    <label class="course-label" for="#duration">Duration:</label>
+    <input
+      #durationField
+      type="text"
+      class="course-input"
+      name="duration"
+      [(ngModel)]="duration"
+      (change)="setDuration()"
+      placeholder="Minutes">
+  </div>
+  <span class="course-span">{{duration | duration}}</span>
+</div>

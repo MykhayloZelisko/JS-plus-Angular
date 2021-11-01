@@ -1,0 +1,10 @@
+<div class="container">
+  <div class="course-wrapper">
+    <h3 class="course-header">New course</h3>
+    <app-course-form
+      [data]="data"
+      (cancelEvent)="cancel()"
+      (saveEvent)="saveCourse($event)"
+    ></app-course-form>
+  </div>
+</div>

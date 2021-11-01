@@ -109,12 +109,12 @@ export class CoursesService {
     this.getCourseList().push(newCourse);
   }
 
-  getCorse(id: number): Course {
+  getCourse(id: number): Course {
     return this.getCourseList().find(courseItem => courseItem.id === id);
   }
 
   updateCourse(id: number, data: CourseData): void {
-    const course = this.getCorse(id);
+    const course = this.getCourse(id);
     course.creationDate = data.creationDate;
     course.description = data.description;
     course.duration = data.duration;
