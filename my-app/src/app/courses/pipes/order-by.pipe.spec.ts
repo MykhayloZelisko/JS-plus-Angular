@@ -73,13 +73,13 @@ describe('OrderByPipe', () => {
   ] as Course[];
   const descList = [...ascList].reverse();
 
-  it('returns ascList', () => {
+  it('should return ascList', () => {
     expect(pipe.transform(list, 'creationDate', 'asc') ).toEqual(
       ascList
     );
   });
 
-  it('returns descList', () => {
+  it('should return descList', () => {
     expect(pipe.transform(list, 'creationDate', 'desc') ).toEqual(
       descList
     );

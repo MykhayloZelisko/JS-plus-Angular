@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 
 @Component({
   selector: 'app-course-authors',
@@ -6,11 +6,7 @@ import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
   styleUrls: ['./course-authors.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class CourseAuthorsComponent implements OnInit {
+export class CourseAuthorsComponent {
 
   constructor() { }
-
-  ngOnInit(): void {
-  }
-
 }

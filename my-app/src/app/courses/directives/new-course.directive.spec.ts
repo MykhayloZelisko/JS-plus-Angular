@@ -12,6 +12,10 @@ describe('NewCourseDirective', () => {
   };
   const directive = new NewCourseDirective(elMock);
 
+  it('should create an instance', () => {
+    expect(directive).toBeTruthy();
+  });
+
   it('should return blue border', () => {
     const currentDate = Date.now();
     const futureDate = currentDate + 86400000;
