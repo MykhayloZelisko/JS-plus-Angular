@@ -7,6 +7,7 @@ describe('AddSearchComponent', () => {
   let component: AddSearchComponent;
   let fixture: ComponentFixture<AddSearchComponent>;
   let routerMock: jasmine.SpyObj<Router>;
+  const valueMock = 'search';
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -26,6 +27,7 @@ describe('AddSearchComponent', () => {
     fixture = TestBed.createComponent(AddSearchComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
+    component.value = valueMock;
   });
 
   it('should create', () => {
@@ -35,5 +37,11 @@ describe('AddSearchComponent', () => {
   it('should redirect to new course', () => {
     component.newCourse();
     expect(routerMock.navigateByUrl).toHaveBeenCalledOnceWith('/courses/new');
+  });
+
+  it('should emit delete on deletecourse', () => {
+    spyOn(component.onSearch, 'emit');
+    component.search();
+    expect(component.onSearch.emit).toHaveBeenCalledOnceWith(valueMock);
   });
 });

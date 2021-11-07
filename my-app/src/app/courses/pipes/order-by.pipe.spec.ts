@@ -85,4 +85,10 @@ describe('OrderByPipe', () => {
     );
   });
 
+  it('should return ascList', () => {
+    expect(pipe.transform(list, 'creationDate') ).toEqual(
+      ascList
+    );
+  });
+
 });
