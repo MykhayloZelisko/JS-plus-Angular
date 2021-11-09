@@ -1,4 +1,4 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Output } from '@angular/core';
 import { Router } from '@angular/router';
 
 @Component({
@@ -6,15 +6,12 @@ import { Router } from '@angular/router';
   templateUrl: './add-search.component.html',
   styleUrls: ['./add-search.component.scss']
 })
-export class AddSearchComponent implements OnInit {
+export class AddSearchComponent {
   @Output() onSearch: EventEmitter<string> = new EventEmitter();
 
   public value: string;
 
   constructor(private _router: Router) { }
-
-  ngOnInit(): void {
-  }
 
   search(): void {
     this.onSearch.emit(this.value);

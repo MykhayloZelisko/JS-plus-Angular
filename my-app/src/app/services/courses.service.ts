@@ -5,7 +5,7 @@ import { Course, CourseData } from '../interfaces/course';
   providedIn: 'root'
 })
 export class CoursesService {
-  private coursesList: Course[] = [
+  public coursesList: Course[] = [
     {
       id: 1,
       title: 'Video Course 1. Name tag',
