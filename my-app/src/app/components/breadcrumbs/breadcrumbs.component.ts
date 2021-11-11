@@ -4,6 +4,7 @@ import { CoursesService } from 'src/app/services/courses.service';
 import { filter } from 'rxjs/operators';
 import { Subscription } from 'rxjs';
 import { AuthService } from 'src/app/services/auth.service';
+import { Course } from 'src/app/interfaces/course';
 
 @Component({
   selector: 'app-breadcrumbs',
@@ -64,7 +65,11 @@ export class BreadcrumbsComponent implements OnInit, OnDestroy, DoCheck {
           this.secondPathFragment = 'New course';
         } else if (this.pathLength === three) {
           const id = +pathFragments[2];
-          this.secondPathFragment = this._coursesService.getCourse(id).title;
+          this._coursesService.getCourse(id).subscribe(
+            (course: Course) => {
+              this.secondPathFragment = course.title;
+            }
+          );
         }
         break;
       default:

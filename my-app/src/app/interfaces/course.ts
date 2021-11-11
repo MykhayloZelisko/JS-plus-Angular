@@ -3,7 +3,7 @@ export interface CourseData {
   creationDate: string,
   duration: number,
   description: string,
-  authors?: string[]
+  authors: CourseAuthor[]
 }
 
 export interface Course extends CourseData {
@@ -15,4 +15,9 @@ export interface ConfigDeleteCourse {
   id: number,
   title: string,
   isVisible: boolean
+}
+
+export interface CourseAuthor {
+  id: number,
+  name: string
 }

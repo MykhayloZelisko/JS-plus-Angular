@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ElementRef, ViewChild } from '@angular/core';
 import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
@@ -7,11 +7,14 @@ import { AuthService } from 'src/app/services/auth.service';
   styleUrls: ['./login.component.scss']
 })
 export class LoginComponent {
+  @ViewChild('loginField') loginField: ElementRef;
+  @ViewChild('passwordField') passwordField: ElementRef;
 
   constructor(private _authService: AuthService) { }
 
   login():void {
-    this._authService.login();
-    console.log('Logged in successfully');
+    const login = this.loginField.nativeElement.value;
+    const password = this.passwordField.nativeElement.value;
+    this._authService.login(login, password);
   }
 }

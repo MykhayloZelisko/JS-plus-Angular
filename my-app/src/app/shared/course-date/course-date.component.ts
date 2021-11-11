@@ -1,4 +1,9 @@
-import { ChangeDetectionStrategy, Component, ElementRef, EventEmitter, Input, Output, ViewChild } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  EventEmitter,
+  Input, Output
+} from '@angular/core';
 
 @Component({
   selector: 'app-course-date',
@@ -7,13 +12,12 @@ import { ChangeDetectionStrategy, Component, ElementRef, EventEmitter, Input, Ou
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class CourseDateComponent {
-  @ViewChild('creationDateField') creationDateField: ElementRef;
   @Input() public creationDate: string;
   @Output() public setDateEvent: EventEmitter<string> = new EventEmitter();
 
   constructor() { }
 
   setDate(): void {
-    this.setDateEvent.emit(this.creationDateField.nativeElement.value);
+    this.setDateEvent.emit(this.creationDate);
   }
 }

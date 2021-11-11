@@ -15,6 +15,8 @@ import { AuthGuard } from './guards/auth.guard';
 import { CoursesModule } from './courses/courses.module';
 import { NewCourseModule } from './new-course/new-course.module';
 import { EditCourseModule } from './edit-course/edit-course.module';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { ApplyTokenInterceptor } from './interceptors/apply-token.interceptor';
 
 @NgModule({
   declarations: [
@@ -33,10 +35,16 @@ import { EditCourseModule } from './edit-course/edit-course.module';
     SharedModule,
     CoursesModule,
     NewCourseModule,
-    EditCourseModule
+    EditCourseModule,
+    HttpClientModule
   ],
   providers: [
-    AuthGuard
+    AuthGuard,
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: ApplyTokenInterceptor,
+      multi: true
+    }
   ],
   bootstrap: [AppComponent]
 })

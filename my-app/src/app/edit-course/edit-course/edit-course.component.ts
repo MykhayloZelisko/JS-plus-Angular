@@ -1,7 +1,7 @@
 import { Location } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { CourseData } from 'src/app/interfaces/course';
+import { Course, CourseData } from 'src/app/interfaces/course';
 import { CoursesService } from 'src/app/services/courses.service';
 
 @Component({
@@ -10,7 +10,13 @@ import { CoursesService } from 'src/app/services/courses.service';
   styleUrls: ['./edit-course.component.scss']
 })
 export class EditCourseComponent implements OnInit {
-  public data: CourseData;
+  public data: CourseData = {
+    title: null,
+    creationDate: null,
+    duration: null,
+    description: null,
+    authors: []
+  };
   public id = +this._activatedRoute.snapshot.paramMap.get('id');
 
   constructor(
@@ -33,6 +39,10 @@ export class EditCourseComponent implements OnInit {
   }
 
   initPageConfiguration(): void {
-    this.data = this._coursesService.getCourse(this.id);
+    this._coursesService.getCourse(this.id).subscribe(
+      (res: Course) => {
+        this.data = res;
+      }
+    );
   }
 }
