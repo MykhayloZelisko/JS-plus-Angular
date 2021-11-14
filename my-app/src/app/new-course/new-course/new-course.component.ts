@@ -35,7 +35,7 @@ export class NewCourseComponent implements OnInit {
       creationDate: null,
       duration: null,
       description: null,
-      authors: []
+      authors: [{ id: null, name: null }]
     };
   }
 }

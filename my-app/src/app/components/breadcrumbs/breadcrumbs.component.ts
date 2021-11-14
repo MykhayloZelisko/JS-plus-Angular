@@ -53,6 +53,7 @@ export class BreadcrumbsComponent implements OnInit, OnDestroy, DoCheck {
           this.firstPathFragment = 'Login';
           break;
         case 'courses':
+        case '':
           this.firstPathFragment = 'Courses';
           break;
         default:
@@ -63,7 +64,7 @@ export class BreadcrumbsComponent implements OnInit, OnDestroy, DoCheck {
         this.firstPathFragment = 'Courses';
         if (pathFragments[2] === 'new') {
           this.secondPathFragment = 'New course';
-        } else if (this.pathLength === three) {
+        } else {
           const id = +pathFragments[2];
           this._coursesService.getCourse(id).subscribe(
             (course: Course) => {
@@ -73,6 +74,7 @@ export class BreadcrumbsComponent implements OnInit, OnDestroy, DoCheck {
         }
         break;
       default:
+        this.firstPathFragment = 'Page not found';
         break;
       }
     });

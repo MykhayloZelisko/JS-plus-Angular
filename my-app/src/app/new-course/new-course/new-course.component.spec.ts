@@ -17,7 +17,8 @@ describe('NewCourseComponent', () => {
     description: `Learn about where you can find course descriptions, what information they include, how they work,
     and details about various components of a course description.  Course descriptions report information about a
     university or college's classes. They're published both in course catalogs that outline degree requirements and
-    in course schedules that contain descriptions for all courses offered during a particular semester.`
+    in course schedules that contain descriptions for all courses offered during a particular semester.`,
+    authors: [{ id: 123, name: 'John Doe' }]
   };
 
   beforeEach(async () => {
@@ -69,7 +70,8 @@ describe('NewCourseComponent', () => {
       title: null,
       creationDate: null,
       duration: null,
-      description: null
+      description: null,
+      authors: [{ id: null, name: null }]
     });
   });
 });

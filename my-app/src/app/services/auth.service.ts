@@ -4,20 +4,22 @@ import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { User } from '../interfaces/user';
-import { ApiService } from './api.service';
+import { environment } from 'src/environments/environment';
+import { HttpClient } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
+  private apiUrl = `${environment.apiUrl}/auth`;
 
   constructor(
     private _router: Router,
-    private _apiService: ApiService
+    private _http: HttpClient,
   ) { }
 
   login(login: string, password: string): void {
-    this._apiService.post('auth/login', { login, password }).subscribe(
+    this._http.post(`${this.apiUrl}/login`, { login, password }).subscribe(
       (res: any) => {
         localStorage.setItem('token', res.token);
         this._router.navigateByUrl('/courses');
@@ -37,7 +39,7 @@ export class AuthService {
 
   getUserInfo(): Observable<User> {
     const token = localStorage.getItem('token');
-    return this._apiService.post('auth/userinfo', { 'token': token }).pipe(
+    return this._http.post(`${this.apiUrl}/userinfo`, { 'token': token }).pipe(
       map( (user: any) => ({
         id: user.id,
         firstName: user.name.first,

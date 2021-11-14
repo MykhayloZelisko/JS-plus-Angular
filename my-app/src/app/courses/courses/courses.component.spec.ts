@@ -1,17 +1,14 @@
 /* eslint-disable no-magic-numbers */
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { Router } from '@angular/router';
+import { of } from 'rxjs';
 import { Course } from 'src/app/interfaces/course';
 import { CoursesService } from 'src/app/services/courses.service';
-import { FilterPipe } from '../pipes/filter.pipe';
-import { OrderByPipe } from '../pipes/order-by.pipe';
-
 import { CoursesComponent } from './courses.component';
 
 describe('CoursesComponent', () => {
   let component: CoursesComponent;
   let fixture: ComponentFixture<CoursesComponent>;
-  let filterPipeMock: jasmine.SpyObj<FilterPipe>;
   let coursesServiceMock: jasmine.SpyObj<CoursesService>;
   let routerMock: jasmine.SpyObj<Router>;
   const coursesListMock: Course[] = [
@@ -23,11 +20,9 @@ describe('CoursesComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [
-        CoursesComponent,
-        OrderByPipe
+        CoursesComponent
       ],
       providers: [
-        { provide: FilterPipe, useValue: jasmine.createSpyObj('FilterPipe', ['transform'] ) },
         { provide: CoursesService, useValue: jasmine.createSpyObj('CoursesService', [
           'deleteCourse',
           'getCourseList'
@@ -39,10 +34,9 @@ describe('CoursesComponent', () => {
   });
 
   beforeEach( () => {
-    filterPipeMock = TestBed.inject(FilterPipe) as jasmine.SpyObj<FilterPipe>;
     routerMock = TestBed.inject(Router) as jasmine.SpyObj<Router>;
     coursesServiceMock = TestBed.inject(CoursesService) as jasmine.SpyObj<CoursesService>;
-    coursesServiceMock.getCourseList.and.returnValue(coursesListMock);
+    coursesServiceMock.getCourseList.and.returnValue(of(coursesListMock) );
   });
 
   beforeEach( () => {
@@ -58,7 +52,6 @@ describe('CoursesComponent', () => {
   it('should get courselist on init', () => {
     expect(coursesServiceMock.getCourseList).toHaveBeenCalledTimes(1);
     expect(component.coursesList).toEqual(coursesListMock);
-    expect(component.filteredList).toEqual(coursesListMock);
   });
 
   it('should track by index', () => {
@@ -67,7 +60,6 @@ describe('CoursesComponent', () => {
   });
 
   it('should open confirm dialog on openConfirmDialog with correct id', () => {
-    component.filteredList = coursesListMock;
     component.openConfirmDialog(coursesListMock[0].id);
     expect(component.confirmDialogConfig).toEqual({
       isVisible: true,
@@ -77,16 +69,8 @@ describe('CoursesComponent', () => {
   });
 
   it('should not open confirm dialog on openConfirmDialog with incorrect id', () => {
-    component.filteredList = coursesListMock;
     component.openConfirmDialog(45);
     expect(component.confirmDialogConfig).toEqual({ isVisible: false, id: null, title: null });
-  });
-
-  it('should filter courses', () => {
-    filterPipeMock.transform.and.returnValue( [coursesListMock[2]] );
-    component.filterCourse('qwerty');
-    expect(component.filteredList).toEqual( [coursesListMock[2]] );
-    expect(filterPipeMock.transform).toHaveBeenCalledOnceWith(coursesListMock, 'qwerty');
   });
 
   it('should redirect to course id page on editCourse', () => {
@@ -102,6 +86,7 @@ describe('CoursesComponent', () => {
 
   it('should delete course', () => {
     const courseMock = coursesListMock[0];
+    coursesServiceMock.deleteCourse.withArgs(123).and.returnValue(of(null) );
     component.confirmDialogConfig = { id: courseMock.id, isVisible: true, title: courseMock.title };
     component.deleteCourse();
     expect(coursesServiceMock.deleteCourse).toHaveBeenCalledOnceWith(courseMock.id);
@@ -112,5 +97,17 @@ describe('CoursesComponent', () => {
     component.confirmDelete();
     expect(component.deleteCourse).toHaveBeenCalledTimes(1);
     expect(component.confirmDialogConfig).toEqual({ isVisible: false, id: null, title: null });
+  });
+
+  it('should filter course list', () => {
+    spyOn(component, 'getCourseList');
+    component.filterCourse('value');
+    expect(component.getCourseList).toHaveBeenCalledTimes(1);
+  });
+
+  it('should load more courses', () => {
+    spyOn(component, 'getCourseList');
+    component.loadCourses();
+    expect(component.getCourseList).toHaveBeenCalledTimes(1);
   });
 });

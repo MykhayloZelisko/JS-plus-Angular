@@ -14,7 +14,8 @@ describe('CourseFormComponent', () => {
     description: `Learn about where you can find course descriptions, what information they include, how they work,
     and details about various components of a course description.  Course descriptions report information about a
     university or college's classes. They're published both in course catalogs that outline degree requirements and
-    in course schedules that contain descriptions for all courses offered during a particular semester.`
+    in course schedules that contain descriptions for all courses offered during a particular semester.`,
+    authors: [{ id: 123, name: 'John Doe' }]
   };
 
   beforeEach(async () => {
@@ -35,30 +36,25 @@ describe('CourseFormComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should init data', () => {
-    component.ngOnInit();
-    expect(component.newData).toEqual(component.data);
-  });
-
   it('should emit cancel', () => {
     spyOn(component.cancelEvent, 'emit');
     component.cancel();
-    expect(component.cancelEvent.emit).toHaveBeenCalledOnceWith(null);
+    expect(component.cancelEvent.emit).toHaveBeenCalledTimes(1);
   });
 
   it('should set date', () => {
     component.setDate('11/06/2021');
-    expect(component.newData.creationDate).toBe('11/06/2021');
+    expect(component.data.creationDate).toBe('11/06/2021');
   });
 
   it('should set duration', () => {
     component.setDuration(125);
-    expect(component.newData.duration).toBe(125);
+    expect(component.data.duration).toBe(125);
   });
 
   it('should save course', () => {
     spyOn(component.saveEvent, 'emit');
     component.saveCourse();
-    expect(component.saveEvent.emit).toHaveBeenCalledOnceWith(component.newData);
+    expect(component.saveEvent.emit).toHaveBeenCalledOnceWith(component.data);
   });
 });
