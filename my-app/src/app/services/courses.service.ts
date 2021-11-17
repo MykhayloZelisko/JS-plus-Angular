@@ -16,23 +16,12 @@ export class CoursesService {
 
   getCourseList(params?: HttpParams): Observable<Course[]> {
     return this._http.get<Course[]>(`${this.apiUrl}/courses`, { params }).pipe(
-      map( (list: any[] ) => list.map( (item: any) => ({
-        id: item.id,
-        title: item.name,
-        description: item.description,
-        topRated: item.isTopRated,
-        creationDate: item.date,
-        authors: item.authors.map( (author: any) => ({
-          id: author.id,
-          name: author.name
-        }) ),
-        duration: item.length
-      }) ) )
+      map( (list: any[] ) => list.map( (item: any) => this.courseMap(item) ) )
     );
   }
 
-  createCourse(data: CourseData): void {
-    this.getCourseList().pipe(
+  createCourse(data: CourseData): Observable<any> {
+    return this.getCourseList().pipe(
       take(1),
       switchMap( (res: Course[] ) => {
         const newFormatData = {
@@ -46,27 +35,16 @@ export class CoursesService {
         };
         return this._http.post(`${this.apiUrl}/courses`, newFormatData);
       })
-    ).subscribe();
+    );
   }
 
   getCourse(id: number): Observable<Course> {
     return this._http.get(`${this.apiUrl}/courses/${id}`).pipe(
-      map( (item: any) => ({
-        id: item.id,
-        title: item.name,
-        description: item.description,
-        topRated: item.isTopRated,
-        creationDate: item.date,
-        authors: item.authors.map( (author: any) => ({
-          id: author.id,
-          name: author.name
-        }) ),
-        duration: item.length
-      }) )
+      map( (item: any) => this.courseMap(item) )
     );
   }
 
-  updateCourse(id: number, data: CourseData): void {
+  updateCourse(id: number, data: CourseData): Observable<any> {
     const newFormatData = {
       name: data.title,
       description: data.description,
@@ -74,14 +52,29 @@ export class CoursesService {
       authors: data.authors,
       length: data.duration
     };
-    this._http.patch(`${this.apiUrl}/courses/${id}`, newFormatData).pipe(
+    return this._http.patch(`${this.apiUrl}/courses/${id}`, newFormatData).pipe(
       take(1)
-    ).subscribe();
+    );
   }
 
   deleteCourse(id: number): Observable<any> {
     return this._http.delete(`${this.apiUrl}/courses/${id}`).pipe(
       take(1)
     );
+  }
+
+  private courseMap(item: any): Course {
+    return {
+      id: item.id,
+      title: item.name,
+      description: item.description,
+      topRated: item.isTopRated,
+      creationDate: item.date,
+      authors: item.authors.map( (author: any) => ({
+        id: author.id,
+        name: author.name
+      }) ),
+      duration: item.length
+    };
   }
 }

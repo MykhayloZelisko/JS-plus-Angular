@@ -1,7 +1,7 @@
 import { Component, DoCheck, OnDestroy, OnInit } from '@angular/core';
 import { Event, NavigationEnd, Router } from '@angular/router';
 import { CoursesService } from 'src/app/services/courses.service';
-import { filter } from 'rxjs/operators';
+import { filter, take } from 'rxjs/operators';
 import { Subscription } from 'rxjs';
 import { AuthService } from 'src/app/services/auth.service';
 import { Course } from 'src/app/interfaces/course';
@@ -17,6 +17,7 @@ export class BreadcrumbsComponent implements OnInit, OnDestroy, DoCheck {
   public pathLength: number;
   public routeSub: Subscription;
   public isAuthenticated: boolean;
+  public getCourseSub: Subscription;
 
   constructor(
     private _coursesService: CoursesService,
@@ -34,6 +35,7 @@ export class BreadcrumbsComponent implements OnInit, OnDestroy, DoCheck {
 
   ngOnDestroy(): void {
     this.routeSub && this.routeSub.unsubscribe();
+    this.getCourseSub && this.getCourseSub.unsubscribe();
   }
 
   setRoute(): void {
@@ -66,7 +68,9 @@ export class BreadcrumbsComponent implements OnInit, OnDestroy, DoCheck {
           this.secondPathFragment = 'New course';
         } else {
           const id = +pathFragments[2];
-          this._coursesService.getCourse(id).subscribe(
+          this.getCourseSub = this._coursesService.getCourse(id).pipe(
+            take(1)
+          ).subscribe(
             (course: Course) => {
               this.secondPathFragment = course.title;
             }

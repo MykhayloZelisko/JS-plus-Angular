@@ -25,7 +25,7 @@ export class NewCourseComponent implements OnInit {
   }
 
   saveCourse(data: CourseData): void {
-    this._coursesService.createCourse(data);
+    this._coursesService.createCourse(data).subscribe();
     this._location.back();
   }
 

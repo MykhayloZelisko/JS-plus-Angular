@@ -18,14 +18,8 @@ export class AuthService {
     private _http: HttpClient,
   ) { }
 
-  login(login: string, password: string): void {
-    this._http.post(`${this.apiUrl}/login`, { login, password }).subscribe(
-      (res: any) => {
-        localStorage.setItem('token', res.token);
-        this._router.navigateByUrl('/courses');
-        console.log('Logged in successfully');
-      }
-    );
+  login(login: string, password: string): Observable<any> {
+    return this._http.post(`${this.apiUrl}/login`, { login, password });
   }
 
   logout(): void {
