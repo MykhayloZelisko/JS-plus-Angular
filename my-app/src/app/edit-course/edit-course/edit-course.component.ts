@@ -20,6 +20,7 @@ export class EditCourseComponent implements OnInit, OnDestroy {
   };
   public id = +this._activatedRoute.snapshot.paramMap.get('id');
   public getCourseSub: Subscription;
+  public updateCourseSub: Subscription;
 
   constructor(
     private _coursesService: CoursesService,
@@ -33,6 +34,7 @@ export class EditCourseComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.getCourseSub && this.getCourseSub.unsubscribe();
+    this.updateCourseSub && this.updateCourseSub.unsubscribe();
   }
 
   cancel(): void {
@@ -40,7 +42,7 @@ export class EditCourseComponent implements OnInit, OnDestroy {
   }
 
   saveCourse(data: CourseData): void {
-    this._coursesService.updateCourse(this.id, data).subscribe();
+    this.updateCourseSub = this._coursesService.updateCourse(this.id, data).subscribe();
     this._location.back();
   }
 

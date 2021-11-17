@@ -1,5 +1,6 @@
 import { Location } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Subscription } from 'rxjs';
 import { CourseData } from 'src/app/interfaces/course';
 import { CoursesService } from 'src/app/services/courses.service';
 
@@ -8,8 +9,9 @@ import { CoursesService } from 'src/app/services/courses.service';
   templateUrl: './new-course.component.html',
   styleUrls: ['./new-course.component.scss']
 })
-export class NewCourseComponent implements OnInit {
+export class NewCourseComponent implements OnInit, OnDestroy {
   public data: CourseData;
+  public createCourseSub: Subscription;
 
   constructor(
     private _coursesService: CoursesService,
@@ -20,12 +22,16 @@ export class NewCourseComponent implements OnInit {
     this.initPageConfiguration();
   }
 
+  ngOnDestroy(): void {
+    this.createCourseSub && this.createCourseSub.unsubscribe();
+  }
+
   cancel(): void {
     this._location.back();
   }
 
   saveCourse(data: CourseData): void {
-    this._coursesService.createCourse(data).subscribe();
+    this.createCourseSub = this._coursesService.createCourse(data).subscribe();
     this._location.back();
   }
 
