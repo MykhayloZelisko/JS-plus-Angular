@@ -9,7 +9,7 @@ import { Router } from '@angular/router';
 export class AddSearchComponent {
   @Output() onSearch: EventEmitter<string> = new EventEmitter();
 
-  public value: string;
+  public value = '';
 
   constructor(private _router: Router) { }
 

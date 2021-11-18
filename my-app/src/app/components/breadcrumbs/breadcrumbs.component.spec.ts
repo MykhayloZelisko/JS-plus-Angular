@@ -1,7 +1,7 @@
 /* eslint-disable no-magic-numbers */
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { NavigationEnd, Router } from '@angular/router';
-import { Subject } from 'rxjs';
+import { Observable, of, Subject } from 'rxjs';
 import { Course } from 'src/app/interfaces/course';
 import { AuthService } from 'src/app/services/auth.service';
 import { CoursesService } from 'src/app/services/courses.service';
@@ -75,6 +75,11 @@ describe('BreadcrumbsComponent', () => {
     expect(component.firstPathFragment).toBe('Page not found');
   });
 
+  it('should set route Page not found', () => {
+    eventsSubject.next(new NavigationEnd(null, '/courses/ooo/ooo', null) );
+    expect(component.firstPathFragment).toBe('Page not found');
+  });
+
   it('should set route Login', () => {
     eventsSubject.next(new NavigationEnd(null, '/login', null) );
     expect(component.firstPathFragment).toBe('Login');
@@ -86,7 +91,7 @@ describe('BreadcrumbsComponent', () => {
   });
 
   it('should set route Courses/New course', () => {
-    coursesServiceMock.getCourse.withArgs(2).and.returnValue({ title: 'Course 2' } as Course);
+    coursesServiceMock.getCourse.withArgs(2).and.returnValue(of({ title: 'Course 2' }) as Observable<Course>);
     eventsSubject.next(new NavigationEnd(null, '/courses/2', null) );
     expect(component.firstPathFragment).toBe('Courses');
     expect(component.secondPathFragment).toBe('Course 2');

@@ -2,7 +2,8 @@
 import { Location } from '@angular/common';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ActivatedRoute } from '@angular/router';
-import { Course } from 'src/app/interfaces/course';
+import { of } from 'rxjs';
+import { Course, CourseAuthor } from 'src/app/interfaces/course';
 import { CoursesService } from 'src/app/services/courses.service';
 
 import { EditCourseComponent } from './edit-course.component';
@@ -28,7 +29,8 @@ describe('EditCourseComponent', () => {
     and details about various components of a course description.  Course descriptions report information about a
     university or college's classes. They're published both in course catalogs that outline degree requirements and
     in course schedules that contain descriptions for all courses offered during a particular semester.`,
-    topRated: false
+    topRated: false,
+    authors: [{}] as CourseAuthor[]
   };
 
   beforeEach(async () => {
@@ -50,6 +52,7 @@ describe('EditCourseComponent', () => {
     activatedRouteMock = TestBed.inject(ActivatedRoute);
     locationMock = TestBed.inject(Location) as jasmine.SpyObj<Location>;
     coursesServiceMock = TestBed.inject(CoursesService) as jasmine.SpyObj<CoursesService>;
+    coursesServiceMock.getCourse.and.returnValue(of(courseMock) );
   });
 
   beforeEach( () => {
@@ -71,7 +74,7 @@ describe('EditCourseComponent', () => {
   });
 
   it('shuld init page configuration', () => {
-    coursesServiceMock.getCourse.and.returnValue(courseMock);
+    coursesServiceMock.getCourse.and.returnValue(of(courseMock) );
     component.initPageConfiguration();
     expect(coursesServiceMock.getCourse).toHaveBeenCalledWith(courseMock.id);
     expect(component.data).toEqual(courseMock);

@@ -1,9 +1,10 @@
 import { Component, DoCheck, OnDestroy, OnInit } from '@angular/core';
 import { Event, NavigationEnd, Router } from '@angular/router';
 import { CoursesService } from 'src/app/services/courses.service';
-import { filter } from 'rxjs/operators';
+import { filter, take } from 'rxjs/operators';
 import { Subscription } from 'rxjs';
 import { AuthService } from 'src/app/services/auth.service';
+import { Course } from 'src/app/interfaces/course';
 
 @Component({
   selector: 'app-breadcrumbs',
@@ -16,6 +17,7 @@ export class BreadcrumbsComponent implements OnInit, OnDestroy, DoCheck {
   public pathLength: number;
   public routeSub: Subscription;
   public isAuthenticated: boolean;
+  public getCourseSub: Subscription;
 
   constructor(
     private _coursesService: CoursesService,
@@ -33,6 +35,7 @@ export class BreadcrumbsComponent implements OnInit, OnDestroy, DoCheck {
 
   ngOnDestroy(): void {
     this.routeSub && this.routeSub.unsubscribe();
+    this.getCourseSub && this.getCourseSub.unsubscribe();
   }
 
   setRoute(): void {
@@ -52,6 +55,7 @@ export class BreadcrumbsComponent implements OnInit, OnDestroy, DoCheck {
           this.firstPathFragment = 'Login';
           break;
         case 'courses':
+        case '':
           this.firstPathFragment = 'Courses';
           break;
         default:
@@ -62,12 +66,19 @@ export class BreadcrumbsComponent implements OnInit, OnDestroy, DoCheck {
         this.firstPathFragment = 'Courses';
         if (pathFragments[2] === 'new') {
           this.secondPathFragment = 'New course';
-        } else if (this.pathLength === three) {
+        } else {
           const id = +pathFragments[2];
-          this.secondPathFragment = this._coursesService.getCourse(id).title;
+          this.getCourseSub = this._coursesService.getCourse(id).pipe(
+            take(1)
+          ).subscribe(
+            (course: Course) => {
+              this.secondPathFragment = course.title;
+            }
+          );
         }
         break;
       default:
+        this.firstPathFragment = 'Page not found';
         break;
       }
     });

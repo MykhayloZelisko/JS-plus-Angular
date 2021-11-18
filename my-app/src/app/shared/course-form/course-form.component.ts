@@ -1,10 +1,8 @@
 import { ChangeDetectionStrategy,
   Component,
-  ElementRef,
   EventEmitter,
-  Input, OnInit,
+  Input,
   Output,
-  ViewChild
 } from '@angular/core';
 import { CourseData } from 'src/app/interfaces/course';
 
@@ -14,39 +12,26 @@ import { CourseData } from 'src/app/interfaces/course';
   styleUrls: ['./course-form.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class CourseFormComponent implements OnInit {
-  @ViewChild('titleField') titleField: ElementRef;
-  @ViewChild('descriptionField') descriptionField: ElementRef;
+export class CourseFormComponent {
   @Input() public data: CourseData;
-  @Output() public cancelEvent: EventEmitter<null> = new EventEmitter();
+  @Output() public cancelEvent: EventEmitter<void> = new EventEmitter();
   @Output() public saveEvent: EventEmitter<CourseData> = new EventEmitter();
-
-  public newData: CourseData;
 
   constructor() { }
 
-  ngOnInit(): void {
-    this.newData = this.data;
-  }
-
   cancel(): void {
-    this.cancelEvent.emit(null);
+    this.cancelEvent.emit();
   }
 
   setDate(date: string): void {
-    this.newData.creationDate = date;
+    this.data.creationDate = date;
   }
 
   setDuration(duration: number): void {
-    this.newData.duration = duration;
+    this.data.duration = duration;
   }
 
   saveCourse(): void {
-    this.newData = {
-      ...this.newData,
-      title: this.titleField.nativeElement.value,
-      description: this.descriptionField.nativeElement.value
-    };
-    this.saveEvent.emit(this.newData);
+    this.saveEvent.emit(this.data);
   }
 }

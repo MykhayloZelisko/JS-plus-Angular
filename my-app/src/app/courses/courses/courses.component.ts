@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ConfigDeleteCourse, Course } from 'src/app/interfaces/course';
-import { FilterPipe } from 'src/app/courses/pipes/filter.pipe';
 import { CoursesService } from 'src/app/services/courses.service';
+import { HttpParams } from '@angular/common/http';
 
 @Component({
   selector: 'app-courses',
@@ -10,19 +10,20 @@ import { CoursesService } from 'src/app/services/courses.service';
   styleUrls: ['./courses.component.scss']
 })
 export class CoursesComponent implements OnInit {
-  public coursesList: Course[];
-  public filteredList: Course[];
+  public coursesList: Course[] = [];
   public confirmDialogConfig: ConfigDeleteCourse = { isVisible: false, id: null, title: null };
+  private start = 0;
+  private count = +'5';
+  private textFragment = '';
+  private sort = 'date';
 
   constructor(
-    private _filter: FilterPipe,
     private _coursesService: CoursesService,
     private _router: Router
   ) { }
 
   ngOnInit(): void {
-    this.coursesList = this._coursesService.getCourseList();
-    this.filteredList = this.coursesList;
+    this.getCourseList(this.getParams() );
   }
 
   trackByIndex(index: number): number {
@@ -30,18 +31,22 @@ export class CoursesComponent implements OnInit {
   }
 
   loadCourses(): void {
-    console.log('load more');
+    this.start = this.coursesList.length;
+    this.getCourseList(this.getParams() );
   }
 
   openConfirmDialog(id: number): void {
-    const currentCourse = this.filteredList.find(course => course.id === id);
+    const currentCourse = this.coursesList.find(course => course.id === id);
     if (currentCourse) {
       this.confirmDialogConfig = { isVisible: true, id: currentCourse.id, title: currentCourse.title };
     }
   }
 
   filterCourse(value: string): void {
-    this.filteredList = this._filter.transform(this.coursesList, value);
+    this.start = 0;
+    this.coursesList = [];
+    this.textFragment = value;
+    this.getCourseList(this.getParams() );
   }
 
   confirmDelete(): void {
@@ -54,11 +59,31 @@ export class CoursesComponent implements OnInit {
   }
 
   deleteCourse(): void {
+    this.coursesList = [];
     const id = this.confirmDialogConfig.id;
-    this._coursesService.deleteCourse(id);
+    this._coursesService.deleteCourse(id).subscribe(
+      () => this.getCourseList(this.getParams() )
+    );
   }
 
   editCourse(course: Course): void {
     this._router.navigateByUrl(`/courses/${course.id}`);
+  }
+
+  getCourseList(params?: HttpParams): void {
+    this.start = 0;
+    this._coursesService.getCourseList(params).subscribe(
+      (list: Course[] ) => {
+        this.coursesList.push(...list);
+      }
+    );
+  }
+
+  private getParams(): HttpParams {
+    return new HttpParams()
+      .set('start', this.start)
+      .set('count', this.count)
+      .set('textFragment', this.textFragment)
+      .set('sort', this.sort);
   }
 }

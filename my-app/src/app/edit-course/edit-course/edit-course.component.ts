@@ -1,7 +1,8 @@
 import { Location } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { CourseData } from 'src/app/interfaces/course';
+import { Subscription } from 'rxjs';
+import { Course, CourseData } from 'src/app/interfaces/course';
 import { CoursesService } from 'src/app/services/courses.service';
 
 @Component({
@@ -9,9 +10,17 @@ import { CoursesService } from 'src/app/services/courses.service';
   templateUrl: './edit-course.component.html',
   styleUrls: ['./edit-course.component.scss']
 })
-export class EditCourseComponent implements OnInit {
-  public data: CourseData;
+export class EditCourseComponent implements OnInit, OnDestroy {
+  public data: CourseData = {
+    title: null,
+    creationDate: null,
+    duration: null,
+    description: null,
+    authors: []
+  };
   public id = +this._activatedRoute.snapshot.paramMap.get('id');
+  public getCourseSub: Subscription;
+  public updateCourseSub: Subscription;
 
   constructor(
     private _coursesService: CoursesService,
@@ -23,16 +32,25 @@ export class EditCourseComponent implements OnInit {
     this.initPageConfiguration();
   }
 
+  ngOnDestroy(): void {
+    this.getCourseSub && this.getCourseSub.unsubscribe();
+    this.updateCourseSub && this.updateCourseSub.unsubscribe();
+  }
+
   cancel(): void {
     this._location.back();
   }
 
   saveCourse(data: CourseData): void {
-    this._coursesService.updateCourse(this.id, data);
+    this.updateCourseSub = this._coursesService.updateCourse(this.id, data).subscribe();
     this._location.back();
   }
 
   initPageConfiguration(): void {
-    this.data = this._coursesService.getCourse(this.id);
+    this.getCourseSub = this._coursesService.getCourse(this.id).subscribe(
+      (res: Course) => {
+        this.data = res;
+      }
+    );
   }
 }

@@ -2,8 +2,8 @@
   <app-add-search
     (onSearch)="filterCourse($event)"
   ></app-add-search>
-  <div *ngIf="filteredList.length !== 0; else elseBlock">
-    <div *ngFor="let course of filteredList | orderBy : 'creationDate' : 'asc'; trackBy: trackByIndex">
+  <div *ngIf="coursesList.length !== 0; else elseBlock">
+    <div *ngFor="let course of coursesList; trackBy: trackByIndex">
       <app-course-item
         class="course"
         [newCourse]="course.creationDate"

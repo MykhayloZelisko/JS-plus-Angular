@@ -1,36 +1,66 @@
-/* eslint-disable no-magic-numbers */
+import { HttpClient } from '@angular/common/http';
 import { TestBed } from '@angular/core/testing';
-import { Course, CourseData } from '../interfaces/course';
+import { of } from 'rxjs';
+import { Course } from '../interfaces/course';
+import { initTestScheduler, addMatchers, hot } from 'jasmine-marbles';
 
 import { CoursesService } from './courses.service';
 
 describe('CoursesService', () => {
   let service: CoursesService;
+  let httpMock: jasmine.SpyObj<HttpClient>;
+
   const coursesListMock: Course[] = [{
     id: 1,
     title: 'Video Course 1. Name tag',
     creationDate: '08/28/2022',
     duration: 88,
-    description: `Learn about where you can find course descriptions, what information they include, how they work,
-      and details about various components of a course description.  Course descriptions report information about a
-      university or college's classes. They're published both in course catalogs that outline degree requirements and
-      in course schedules that contain descriptions for all courses offered during a particular semester.`,
-    topRated: false
+    description: `Learn about`,
+    topRated: false,
+    authors: [{
+      id: 123,
+      name: 'John Doe'
+    }]
   }];
-  const courseDataMock: CourseData = {
-    title: 'Video Course 1. Name tag',
-    creationDate: '08/28/2022',
-    duration: 88,
-    description: `Learn about where you can find course descriptions, what information they include, how they work,
-      and details about various components of a course description.  Course descriptions report information about a
-      university or college's classes. They're published both in course catalogs that outline degree requirements and
-      in course schedules that contain descriptions for all courses offered during a particular semester.`
+  const courseMock = coursesListMock[0];
+  const responseMock = {
+    id: 1,
+    name: 'Video Course 1. Name tag',
+    description: `Learn about`,
+    isTopRated: false,
+    date: '08/28/2022',
+    authors: [{
+      id: 123,
+      name: 'John Doe'
+    }],
+    length: 88
   };
+  const resListMock = [{
+    id: 1,
+    name: 'Video Course 1. Name tag',
+    description: `Learn about`,
+    isTopRated: false,
+    date: '08/28/2022',
+    authors: [{
+      id: 123,
+      name: 'John Doe'
+    }],
+    length: 88
+  }];
 
   beforeEach( () => {
-    TestBed.configureTestingModule({});
+    TestBed.configureTestingModule({
+      providers: [
+        { provide: HttpClient, useValue: jasmine.createSpyObj('HttpClient', ['get', 'post', 'patch', 'delete'] ) }
+      ]
+    });
     service = TestBed.inject(CoursesService);
-    service.coursesList = [...coursesListMock] as Course[];
+  });
+
+  beforeEach( () => {
+    httpMock = TestBed.inject(HttpClient) as jasmine.SpyObj<HttpClient>;
+    initTestScheduler();
+    addMatchers();
   });
 
   it('should be created', () => {
@@ -38,32 +68,17 @@ describe('CoursesService', () => {
   });
 
   it('should return course 0', () => {
-    expect(service.getCourse(1) ).toEqual(coursesListMock[0] );
-  });
-
-  it('should return undefined', () => {
-    expect(service.getCourse(10) ).toEqual(undefined);
+    httpMock.get.and.returnValue(of(responseMock) );
+    expect(service.getCourse(1) ).toBeObservable(hot('(a|)', { a: courseMock }) );
   });
 
   it('should return courses list', () => {
-    expect(service.getCourseList() ).toEqual(coursesListMock);
-  });
-
-  it('should create course', () => {
-    service.createCourse(courseDataMock);
-    expect(service.coursesList).toEqual( [coursesListMock[0], { id: 2, topRated: false, ...courseDataMock } ] );
-  });
-
-  it('should update course', () => {
-    service.updateCourse(1, courseDataMock);
-    expect(service.coursesList[0].creationDate).toBe(courseDataMock.creationDate);
-    expect(service.coursesList[0].description).toBe(courseDataMock.description);
-    expect(service.coursesList[0].duration).toBe(courseDataMock.duration);
-    expect(service.coursesList[0].title).toBe(courseDataMock.title);
+    httpMock.get.and.returnValue(of(resListMock) );
+    expect(service.getCourseList() ).toBeObservable(hot('(a|)', { a: coursesListMock }) );
   });
 
   it('should delete course', () => {
-    service.deleteCourse(1);
-    expect(service.coursesList).toEqual( [] );
+    httpMock.delete.and.returnValue(of(null) );
+    expect(service.deleteCourse(1) ).toBeObservable(hot('(a|)', { a: null }) );
   });
 });

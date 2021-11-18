@@ -1,134 +1,80 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
+import { map, switchMap, take } from 'rxjs/operators';
+import { environment } from 'src/environments/environment';
 import { Course, CourseData } from '../interfaces/course';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CoursesService {
-  public coursesList: Course[] = [
-    {
-      id: 1,
-      title: 'Video Course 1. Name tag',
-      creationDate: '08/28/2022',
-      duration: 88,
-      description: `Learn about where you can find course descriptions, what information they include, how they work,
-      and details about various components of a course description.  Course descriptions report information about a
-      university or college's classes. They're published both in course catalogs that outline degree requirements and
-      in course schedules that contain descriptions for all courses offered during a particular semester.`,
-      topRated: false
-    },
-    {
-      id: 2,
-      title: 'Video Course 2. Name tag',
-      creationDate: '10/01/2021',
-      duration: 60,
-      description: `Learn about where you can find course descriptions, what information they include, how they work,
-      and details about various components of a course description.  Course descriptions report information about a
-      university or college's classes. They're published both in course catalogs that outline degree requirements and
-      in course schedules that contain descriptions for all courses offered during a particular semester.`,
-      topRated: true
-    },
-    {
-      id: 3,
-      title: 'Video Course 3. Name tag',
-      creationDate: '09/28/2021',
-      duration: 55,
-      description: `Learn about where you can find course descriptions, what information they include, how they work,
-      and details about various components of a course description.  Course descriptions report information about a
-      university or college's classes. They're published both in course catalogs that outline degree requirements and
-      in course schedules that contain descriptions for all courses offered during a particular semester.`,
-      topRated: true
-    },
-    {
-      id: 4,
-      title: 'Video Course 4. Name tag',
-      creationDate: '10/28/2021',
-      duration: 75,
-      description: `Learn about where you can find course descriptions, what information they include, how they work,
-      and details about various components of a course description.  Course descriptions report information about a
-      university or college's classes. They're published both in course catalogs that outline degree requirements and
-      in course schedules that contain descriptions for all courses offered during a particular semester.`,
-      topRated: false
-    },
-    {
-      id: 5,
-      title: 'Video Course 5. Name tag',
-      creationDate: '07/06/2020',
-      duration: 34,
-      description: `Learn about where you can find course descriptions, what information they include, how they work,
-      and details about various components of a course description.  Course descriptions report information about a
-      university or college's classes. They're published both in course catalogs that outline degree requirements and
-      in course schedules that contain descriptions for all courses offered during a particular semester.`,
-      topRated: false
-    },
-    {
-      id: 6,
-      title: 'Video Course 6. Name tag',
-      creationDate: '08/29/2020',
-      duration: 45,
-      description: `Learn about where you can find course descriptions, what information they include, how they work,
-      and details about various components of a course description.  Course descriptions report information about a
-      university or college's classes. They're published both in course catalogs that outline degree requirements and
-      in course schedules that contain descriptions for all courses offered during a particular semester.`,
-      topRated: true
-    },
-    {
-      id: 7,
-      title: 'Video Course 7. Name tag',
-      creationDate: '11/25/2021',
-      duration: 124,
-      description: `Learn about where you can find course descriptions, what information they include, how they work,
-      and details about various components of a course description.  Course descriptions report information about a
-      university or college's classes. They're published both in course catalogs that outline degree requirements and
-      in course schedules that contain descriptions for all courses offered during a particular semester.`,
-      topRated: true
-    },
-    {
-      id: 8,
-      title: 'Video Course 8. Name tag',
-      creationDate: '12/28/2021',
-      duration: 34,
-      description: `Learn about where you can find course descriptions, what information they include, how they work,
-      and details about various components of a course description.  Course descriptions report information about a
-      university or college's classes. They're published both in course catalogs that outline degree requirements and
-      in course schedules that contain descriptions for all courses offered during a particular semester.`,
-      topRated: true
-    }
-  ];
+  private apiUrl = environment.apiUrl;
 
-  constructor() { }
+  constructor(private _http: HttpClient) { }
 
-  getCourseList(): Course[] {
-    return this.coursesList;
+  getCourseList(params?: HttpParams): Observable<Course[]> {
+    return this._http.get<Course[]>(`${this.apiUrl}/courses`, { params }).pipe(
+      map( (list: any[] ) => list.map( (item: any) => this.courseMap(item) ) )
+    );
   }
 
-  createCourse(data: CourseData): void {
-    const id = this.generateId();
-    const topRated = false;
-    const newCourse = { id, topRated, ...data };
-    this.getCourseList().push(newCourse);
+  createCourse(data: CourseData): Observable<any> {
+    return this.getCourseList().pipe(
+      take(1),
+      switchMap( (res: Course[] ) => {
+        const newFormatData = {
+          id: Math.max(...res.map(course => course.id) ) + 1,
+          name: data.title,
+          description: data.description,
+          date: data.creationDate,
+          authors: [{}],
+          length: data.duration,
+          isTopRated: false
+        };
+        return this._http.post(`${this.apiUrl}/courses`, newFormatData);
+      })
+    );
   }
 
-  getCourse(id: number): Course {
-    return this.getCourseList().find(courseItem => courseItem.id === id);
+  getCourse(id: number): Observable<Course> {
+    return this._http.get(`${this.apiUrl}/courses/${id}`).pipe(
+      map( (item: any) => this.courseMap(item) )
+    );
   }
 
-  updateCourse(id: number, data: CourseData): void {
-    const course = this.getCourse(id);
-    course.creationDate = data.creationDate;
-    course.description = data.description;
-    course.duration = data.duration;
-    course.title = data.title;
+  updateCourse(id: number, data: CourseData): Observable<any> {
+    const newFormatData = {
+      name: data.title,
+      description: data.description,
+      date: data.creationDate,
+      authors: data.authors,
+      length: data.duration
+    };
+    return this._http.patch(`${this.apiUrl}/courses/${id}`, newFormatData).pipe(
+      take(1)
+    );
   }
 
-  deleteCourse(id: number): void {
-    const index = this.getCourseList().findIndex(item => item.id === id);
-    this.getCourseList().splice(index, 1);
+  deleteCourse(id: number): Observable<any> {
+    return this._http.delete(`${this.apiUrl}/courses/${id}`).pipe(
+      take(1)
+    );
   }
 
-  private generateId(): number {
-    const arrayId = this.getCourseList().map(course => course.id);
-    const newId = Math.max(...arrayId) + 1;
-    return newId;
+  private courseMap(item: any): Course {
+    return {
+      id: item.id,
+      title: item.name,
+      description: item.description,
+      topRated: item.isTopRated,
+      creationDate: item.date,
+      authors: item.authors.map( (author: any) => ({
+        id: author.id,
+        name: author.name
+      }) ),
+      duration: item.length
+    };
   }
 }
