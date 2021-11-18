@@ -1,8 +1,10 @@
 import { Location } from '@angular/common';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
+import { finalize } from 'rxjs/operators';
 import { CourseData } from 'src/app/interfaces/course';
 import { CoursesService } from 'src/app/services/courses.service';
+import { LoadingService } from 'src/app/services/loading.service';
 
 @Component({
   selector: 'app-new-course',
@@ -15,7 +17,8 @@ export class NewCourseComponent implements OnInit, OnDestroy {
 
   constructor(
     private _coursesService: CoursesService,
-    private _location: Location
+    private _location: Location,
+    private _loadingService: LoadingService
   ) { }
 
   ngOnInit(): void {
@@ -31,7 +34,10 @@ export class NewCourseComponent implements OnInit, OnDestroy {
   }
 
   saveCourse(data: CourseData): void {
-    this.createCourseSub = this._coursesService.createCourse(data).subscribe();
+    this._loadingService.toggle();
+    this.createCourseSub = this._coursesService.createCourse(data).pipe(
+      finalize( () => this._loadingService.toggle() )
+    ).subscribe();
     this._location.back();
   }
 

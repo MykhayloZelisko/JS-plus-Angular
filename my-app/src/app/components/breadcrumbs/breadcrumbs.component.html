@@ -1,4 +1,4 @@
-<div *ifAuthenticated="isAuthenticated" class="container">
+<div *ifAuthenticated class="container">
   <p *ngIf="pathLength !== 3; else elseBlock">{{firstPathFragment}}</p>
   <ng-template #elseBlock>
     <p><a class="link" routerLink="/courses">{{firstPathFragment}}</a> <span class="slash"> / </span> {{secondPathFragment}}</p>

@@ -2,8 +2,10 @@ import { Location } from '@angular/common';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
+import { finalize } from 'rxjs/operators';
 import { Course, CourseData } from 'src/app/interfaces/course';
 import { CoursesService } from 'src/app/services/courses.service';
+import { LoadingService } from 'src/app/services/loading.service';
 
 @Component({
   selector: 'app-edit-course',
@@ -25,7 +27,8 @@ export class EditCourseComponent implements OnInit, OnDestroy {
   constructor(
     private _coursesService: CoursesService,
     private _location: Location,
-    private _activatedRoute: ActivatedRoute
+    private _activatedRoute: ActivatedRoute,
+    private _loadingService: LoadingService
   ) { }
 
   ngOnInit(): void {
@@ -42,7 +45,10 @@ export class EditCourseComponent implements OnInit, OnDestroy {
   }
 
   saveCourse(data: CourseData): void {
-    this.updateCourseSub = this._coursesService.updateCourse(this.id, data).subscribe();
+    this._loadingService.toggle();
+    this.updateCourseSub = this._coursesService.updateCourse(this.id, data).pipe(
+      finalize( () => this._loadingService.toggle() ),
+    ).subscribe();
     this._location.back();
   }
 

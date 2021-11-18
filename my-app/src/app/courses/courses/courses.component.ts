@@ -3,6 +3,8 @@ import { Router } from '@angular/router';
 import { ConfigDeleteCourse, Course } from 'src/app/interfaces/course';
 import { CoursesService } from 'src/app/services/courses.service';
 import { HttpParams } from '@angular/common/http';
+import { LoadingService } from 'src/app/services/loading.service';
+import { debounceTime, finalize } from 'rxjs/operators';
 
 @Component({
   selector: 'app-courses',
@@ -19,11 +21,12 @@ export class CoursesComponent implements OnInit {
 
   constructor(
     private _coursesService: CoursesService,
-    private _router: Router
+    private _router: Router,
+    private _loadingService: LoadingService
   ) { }
 
   ngOnInit(): void {
-    this.getCourseList(this.getParams() );
+    this.filterCourse();
   }
 
   trackByIndex(index: number): number {
@@ -42,11 +45,21 @@ export class CoursesComponent implements OnInit {
     }
   }
 
-  filterCourse(value: string): void {
-    this.start = 0;
-    this.coursesList = [];
-    this.textFragment = value;
-    this.getCourseList(this.getParams() );
+  filterCourse(): void {
+    const minLength = 3;
+    const delay = 1000;
+    this._coursesService.searchValue.pipe(
+      debounceTime(delay)
+    ).subscribe(
+      (value) => {
+        if (value.length >= minLength || value === '') {
+          this.start = 0;
+          this.coursesList = [];
+          this.textFragment = value;
+          this.getCourseList(this.getParams() );
+        }
+      }
+    );
   }
 
   confirmDelete(): void {
@@ -61,7 +74,10 @@ export class CoursesComponent implements OnInit {
   deleteCourse(): void {
     this.coursesList = [];
     const id = this.confirmDialogConfig.id;
-    this._coursesService.deleteCourse(id).subscribe(
+    this._loadingService.toggle();
+    this._coursesService.deleteCourse(id).pipe(
+      finalize( () => this._loadingService.toggle() )
+    ).subscribe(
       () => this.getCourseList(this.getParams() )
     );
   }
@@ -72,7 +88,10 @@ export class CoursesComponent implements OnInit {
 
   getCourseList(params?: HttpParams): void {
     this.start = 0;
-    this._coursesService.getCourseList(params).subscribe(
+    this._loadingService.toggle();
+    this._coursesService.getCourseList(params).pipe(
+      finalize( () => this._loadingService.toggle() )
+    ).subscribe(
       (list: Course[] ) => {
         this.coursesList.push(...list);
       }
