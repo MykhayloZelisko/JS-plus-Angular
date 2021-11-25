@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Observable, Subscription } from 'rxjs';
 import { finalize } from 'rxjs/operators';
 import { User } from 'src/app/interfaces/user';
 import { AuthService } from 'src/app/services/auth.service';
@@ -10,8 +10,9 @@ import { LoadingService } from 'src/app/services/loading.service';
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.scss']
 })
-export class HeaderComponent implements OnInit {
-  public user: Observable<User>
+export class HeaderComponent implements OnInit, OnDestroy {
+  public user$: Observable<User>;
+  public getUserSub: Subscription;
 
   constructor(
     private _authService: AuthService,
@@ -20,7 +21,7 @@ export class HeaderComponent implements OnInit {
 
   ngOnInit(): void {
     this._loadingService.toggle();
-    this._authService.getUserInfo().pipe(
+    this.getUserSub = this._authService.getUserInfo().pipe(
       finalize( () => this._loadingService.toggle() )
     ).subscribe(
       (user: User) => {
@@ -29,7 +30,11 @@ export class HeaderComponent implements OnInit {
         }
       }
     );
-    this.user = this._authService.userInfo;
+    this.user$ = this._authService.userInfo;
+  }
+
+  ngOnDestroy(): void {
+    this.getUserSub && this.getUserSub.unsubscribe();
   }
 
   logout(): void {

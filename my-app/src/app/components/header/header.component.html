@@ -1,7 +1,9 @@
 <div class="container">
   <app-logo></app-logo>
   <div class="login" *ifAuthenticated>
-    <p class="login-info"><span class="material-icons login-icon">person</span>{{(user | async).firstName}} {{(user | async).lastName}}</p>
+    <ng-container *ngIf="(user$ | async) as user">
+      <p class="login-info"><span class="material-icons login-icon">person</span>{{user.firstName}} {{user.lastName}}</p>
+    </ng-container>
     <button class="logout-btn" (click)="logout()"><span class="material-icons login-icon">logout</span>Log out</button>
   </div>
 </div>

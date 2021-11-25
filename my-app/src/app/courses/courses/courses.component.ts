@@ -1,19 +1,23 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ConfigDeleteCourse, Course } from 'src/app/interfaces/course';
 import { CoursesService } from 'src/app/services/courses.service';
 import { HttpParams } from '@angular/common/http';
 import { LoadingService } from 'src/app/services/loading.service';
 import { debounceTime, finalize } from 'rxjs/operators';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-courses',
   templateUrl: './courses.component.html',
   styleUrls: ['./courses.component.scss']
 })
-export class CoursesComponent implements OnInit {
+export class CoursesComponent implements OnInit, OnDestroy {
   public coursesList: Course[] = [];
   public confirmDialogConfig: ConfigDeleteCourse = { isVisible: false, id: null, title: null };
+  public filterSub: Subscription;
+  public deleteCourseSub: Subscription;
+  public getCourseListSub: Subscription;
   private start = 0;
   private count = +'5';
   private textFragment = '';
@@ -27,6 +31,12 @@ export class CoursesComponent implements OnInit {
 
   ngOnInit(): void {
     this.filterCourse();
+  }
+
+  ngOnDestroy(): void {
+    this.filterSub && this.filterSub.unsubscribe();
+    this.deleteCourseSub && this.deleteCourseSub.unsubscribe();
+    this.getCourseListSub && this.getCourseListSub.unsubscribe();
   }
 
   trackByIndex(index: number): number {
@@ -48,7 +58,7 @@ export class CoursesComponent implements OnInit {
   filterCourse(): void {
     const minLength = 3;
     const delay = 1000;
-    this._coursesService.searchValue.pipe(
+    this.filterSub = this._coursesService.searchValue.pipe(
       debounceTime(delay)
     ).subscribe(
       (value) => {
@@ -75,7 +85,7 @@ export class CoursesComponent implements OnInit {
     this.coursesList = [];
     const id = this.confirmDialogConfig.id;
     this._loadingService.toggle();
-    this._coursesService.deleteCourse(id).pipe(
+    this.deleteCourseSub = this._coursesService.deleteCourse(id).pipe(
       finalize( () => this._loadingService.toggle() )
     ).subscribe(
       () => this.getCourseList(this.getParams() )
@@ -89,7 +99,7 @@ export class CoursesComponent implements OnInit {
   getCourseList(params?: HttpParams): void {
     this.start = 0;
     this._loadingService.toggle();
-    this._coursesService.getCourseList(params).pipe(
+    this.getCourseListSub = this._coursesService.getCourseList(params).pipe(
       finalize( () => this._loadingService.toggle() )
     ).subscribe(
       (list: Course[] ) => {
