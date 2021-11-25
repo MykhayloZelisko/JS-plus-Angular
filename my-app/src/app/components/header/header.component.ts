@@ -20,6 +20,18 @@ export class HeaderComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit(): void {
+    this.initUser();
+  }
+
+  ngOnDestroy(): void {
+    this.getUserSub && this.getUserSub.unsubscribe();
+  }
+
+  logout(): void {
+    this._authService.logout();
+  }
+
+  initUser(): void {
     this._loadingService.toggle();
     this.getUserSub = this._authService.getUserInfo().pipe(
       finalize( () => this._loadingService.toggle() )
@@ -31,13 +43,5 @@ export class HeaderComponent implements OnInit, OnDestroy {
       }
     );
     this.user$ = this._authService.userInfo;
-  }
-
-  ngOnDestroy(): void {
-    this.getUserSub && this.getUserSub.unsubscribe();
-  }
-
-  logout(): void {
-    this._authService.logout();
   }
 }
