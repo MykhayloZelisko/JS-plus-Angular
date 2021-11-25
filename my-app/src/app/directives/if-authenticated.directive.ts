@@ -26,7 +26,7 @@ export class IfAuthenticatedDirective implements OnInit, OnDestroy {
   private isAuthenticated(): void {
     this.userSub = this._authService.userInfo.subscribe(
       (user: User) => {
-        if (user === null) {
+        if (!user) {
           this._viewContainer.clear();
           return;
         } else {
