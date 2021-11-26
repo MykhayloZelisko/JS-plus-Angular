@@ -1,8 +1,8 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Component, ElementRef, OnDestroy, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
-import { finalize, switchMap } from 'rxjs/operators';
+import { finalize, map, switchMap } from 'rxjs/operators';
+import { User } from 'src/app/interfaces/user';
 import { AuthService } from 'src/app/services/auth.service';
 import { LoadingService } from 'src/app/services/loading.service';
 
@@ -32,13 +32,18 @@ export class LoginComponent implements OnDestroy {
     const password = this.passwordField.nativeElement.value;
     this._loadingService.toggle();
     this.loginSub = this._authService.login(login, password).pipe(
-      switchMap( () => this._authService.getUserInfo() ),
-      finalize( () => this._loadingService.toggle() )
-    ).subscribe(
-      (res: any) => {
+      finalize( () => this._loadingService.toggle() ),
+      map( (res: { token: string }) => {
         localStorage.setItem('token', res.token);
+        return res.token;
+      }),
+      switchMap( () => {
+        return this._authService.getUserInfo();
+      })
+    ).subscribe(
+      (user: User) => {
         this._router.navigateByUrl('/courses');
-        this._authService.userInfo.next(res.user);
+        this._authService.userInfo.next(user);
       }
     );
   }
