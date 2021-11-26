@@ -17,6 +17,7 @@ import { NewCourseModule } from './new-course/new-course.module';
 import { EditCourseModule } from './edit-course/edit-course.module';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { ApplyTokenInterceptor } from './interceptors/apply-token.interceptor';
+import { LoadingSpinnerComponent } from './components/loading-spinner/loading-spinner.component';
 
 @NgModule({
   declarations: [
@@ -25,7 +26,8 @@ import { ApplyTokenInterceptor } from './interceptors/apply-token.interceptor';
     BreadcrumbsComponent,
     FooterComponent,
     LogoComponent,
-    IfAuthenticatedDirective
+    IfAuthenticatedDirective,
+    LoadingSpinnerComponent
   ],
   imports: [
     BrowserModule,

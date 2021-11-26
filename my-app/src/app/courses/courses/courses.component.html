@@ -1,7 +1,5 @@
 <div class="container">
-  <app-add-search
-    (onSearch)="filterCourse($event)"
-  ></app-add-search>
+  <app-add-search></app-add-search>
   <div *ngIf="coursesList.length !== 0; else elseBlock">
     <div *ngFor="let course of coursesList; trackBy: trackByIndex">
       <app-course-item

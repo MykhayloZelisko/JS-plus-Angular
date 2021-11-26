@@ -1,5 +1,6 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component } from '@angular/core';
 import { Router } from '@angular/router';
+import { CoursesService } from 'src/app/services/courses.service';
 
 @Component({
   selector: 'app-add-search',
@@ -7,14 +8,15 @@ import { Router } from '@angular/router';
   styleUrls: ['./add-search.component.scss']
 })
 export class AddSearchComponent {
-  @Output() onSearch: EventEmitter<string> = new EventEmitter();
-
   public value = '';
 
-  constructor(private _router: Router) { }
+  constructor(
+    private _router: Router,
+    private _coursesService: CoursesService
+  ) { }
 
   search(): void {
-    this.onSearch.emit(this.value);
+    this._coursesService.searchValue.next(this.value);
   }
 
   newCourse(): void {

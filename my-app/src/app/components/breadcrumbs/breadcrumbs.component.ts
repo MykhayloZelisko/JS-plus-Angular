@@ -1,9 +1,8 @@
-import { Component, DoCheck, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Event, NavigationEnd, Router } from '@angular/router';
 import { CoursesService } from 'src/app/services/courses.service';
 import { filter, take } from 'rxjs/operators';
 import { Subscription } from 'rxjs';
-import { AuthService } from 'src/app/services/auth.service';
 import { Course } from 'src/app/interfaces/course';
 
 @Component({
@@ -11,26 +10,20 @@ import { Course } from 'src/app/interfaces/course';
   templateUrl: './breadcrumbs.component.html',
   styleUrls: ['./breadcrumbs.component.scss']
 })
-export class BreadcrumbsComponent implements OnInit, OnDestroy, DoCheck {
+export class BreadcrumbsComponent implements OnInit, OnDestroy {
   public firstPathFragment: string;
   public secondPathFragment: string;
   public pathLength: number;
   public routeSub: Subscription;
-  public isAuthenticated: boolean;
   public getCourseSub: Subscription;
 
   constructor(
     private _coursesService: CoursesService,
-    private _router: Router,
-    private _authService: AuthService
+    private _router: Router
   ) { }
 
   ngOnInit(): void {
     this.setRoute();
-  }
-
-  ngDoCheck(): void {
-    this.isAuthenticated = this._authService.isAuthenticated();
   }
 
   ngOnDestroy(): void {

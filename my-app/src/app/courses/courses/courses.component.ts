@@ -1,17 +1,23 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ConfigDeleteCourse, Course } from 'src/app/interfaces/course';
 import { CoursesService } from 'src/app/services/courses.service';
 import { HttpParams } from '@angular/common/http';
+import { LoadingService } from 'src/app/services/loading.service';
+import { debounceTime, finalize } from 'rxjs/operators';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-courses',
   templateUrl: './courses.component.html',
   styleUrls: ['./courses.component.scss']
 })
-export class CoursesComponent implements OnInit {
+export class CoursesComponent implements OnInit, OnDestroy {
   public coursesList: Course[] = [];
   public confirmDialogConfig: ConfigDeleteCourse = { isVisible: false, id: null, title: null };
+  public filterSub: Subscription;
+  public deleteCourseSub: Subscription;
+  public getCourseListSub: Subscription;
   private start = 0;
   private count = +'5';
   private textFragment = '';
@@ -19,11 +25,18 @@ export class CoursesComponent implements OnInit {
 
   constructor(
     private _coursesService: CoursesService,
-    private _router: Router
+    private _router: Router,
+    private _loadingService: LoadingService
   ) { }
 
   ngOnInit(): void {
-    this.getCourseList(this.getParams() );
+    this.filterCourse();
+  }
+
+  ngOnDestroy(): void {
+    this.filterSub && this.filterSub.unsubscribe();
+    this.deleteCourseSub && this.deleteCourseSub.unsubscribe();
+    this.getCourseListSub && this.getCourseListSub.unsubscribe();
   }
 
   trackByIndex(index: number): number {
@@ -42,11 +55,21 @@ export class CoursesComponent implements OnInit {
     }
   }
 
-  filterCourse(value: string): void {
-    this.start = 0;
-    this.coursesList = [];
-    this.textFragment = value;
-    this.getCourseList(this.getParams() );
+  filterCourse(): void {
+    const minLength = 3;
+    const delay = 1000;
+    this.filterSub = this._coursesService.searchValue.pipe(
+      debounceTime(delay)
+    ).subscribe(
+      (value) => {
+        if (value.length >= minLength || value === '') {
+          this.start = 0;
+          this.coursesList = [];
+          this.textFragment = value;
+          this.getCourseList(this.getParams() );
+        }
+      }
+    );
   }
 
   confirmDelete(): void {
@@ -61,7 +84,10 @@ export class CoursesComponent implements OnInit {
   deleteCourse(): void {
     this.coursesList = [];
     const id = this.confirmDialogConfig.id;
-    this._coursesService.deleteCourse(id).subscribe(
+    this._loadingService.toggle();
+    this.deleteCourseSub = this._coursesService.deleteCourse(id).pipe(
+      finalize( () => this._loadingService.toggle() )
+    ).subscribe(
       () => this.getCourseList(this.getParams() )
     );
   }
@@ -72,7 +98,10 @@ export class CoursesComponent implements OnInit {
 
   getCourseList(params?: HttpParams): void {
     this.start = 0;
-    this._coursesService.getCourseList(params).subscribe(
+    this._loadingService.toggle();
+    this.getCourseListSub = this._coursesService.getCourseList(params).pipe(
+      finalize( () => this._loadingService.toggle() )
+    ).subscribe(
       (list: Course[] ) => {
         this.coursesList.push(...list);
       }
