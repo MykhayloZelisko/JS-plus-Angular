@@ -1,47 +1,25 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
+import { Store } from '@ngrx/store';
 import { Observable, Subscription } from 'rxjs';
-import { finalize } from 'rxjs/operators';
+import { AppStoreState } from 'src/app/app-store/app-store.state';
+import { Logout } from 'src/app/app-store/user/user.actions';
+import { selectUser } from 'src/app/app-store/user/user.selectors';
 import { User } from 'src/app/interfaces/user';
-import { AuthService } from 'src/app/services/auth.service';
-import { LoadingService } from 'src/app/services/loading.service';
 
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.scss']
 })
-export class HeaderComponent implements OnInit, OnDestroy {
-  public user$: Observable<User>;
+export class HeaderComponent {
+  public user$: Observable<User> = this._store.select(selectUser);
   public getUserSub: Subscription;
 
   constructor(
-    private _authService: AuthService,
-    private _loadingService: LoadingService
+    private _store: Store<AppStoreState>
   ) { }
 
-  ngOnInit(): void {
-    this.initUser();
-  }
-
-  ngOnDestroy(): void {
-    this.getUserSub && this.getUserSub.unsubscribe();
-  }
-
   logout(): void {
-    this._authService.logout();
-  }
-
-  initUser(): void {
-    this._loadingService.toggle();
-    this.getUserSub = this._authService.getUserInfo().pipe(
-      finalize( () => this._loadingService.toggle() )
-    ).subscribe(
-      (user: User) => {
-        if (user !== null) {
-          this._authService.userInfo.next(user);
-        }
-      }
-    );
-    this.user$ = this._authService.userInfo;
+    this._store.dispatch(new Logout() );
   }
 }
