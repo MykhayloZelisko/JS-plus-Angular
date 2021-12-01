@@ -4,7 +4,7 @@ import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Observable, of } from 'rxjs';
 import { catchError, map, switchMap, tap } from 'rxjs/operators';
 import { User } from 'src/app/interfaces/user';
-import { AuthService } from '../../services/auth.service';
+import { AuthService } from './auth.service';
 import { Login, LoginFail, LoginSuccess, Logout, UpdateUserInfo } from './user.actions';
 import { UserActionType } from './user.models';
 

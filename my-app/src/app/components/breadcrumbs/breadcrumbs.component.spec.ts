@@ -3,7 +3,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { NavigationEnd, Router } from '@angular/router';
 import { Observable, of, Subject } from 'rxjs';
 import { Course } from 'src/app/interfaces/course';
-import { AuthService } from 'src/app/services/auth.service';
+import { AuthService } from 'src/app/app-store/user/auth.service';
 import { CoursesService } from 'src/app/services/courses.service';
 
 import { BreadcrumbsComponent } from './breadcrumbs.component';

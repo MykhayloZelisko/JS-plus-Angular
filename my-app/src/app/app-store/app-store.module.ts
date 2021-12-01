@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
-import { AuthService } from '../services/auth.service';
+import { AuthService } from './user/auth.service';
 import { UserEffects } from './user/user.effects';
 import { userReducer } from './user/user.reducer';
 

@@ -6,7 +6,6 @@ import { map } from 'rxjs/operators';
 import { AppStoreState } from '../app-store/app-store.state';
 import { selectUser } from '../app-store/user/user.selectors';
 import { User } from '../interfaces/user';
-import { AuthService } from '../services/auth.service';
 
 @Injectable({
   providedIn: 'root'
@@ -14,8 +13,7 @@ import { AuthService } from '../services/auth.service';
 export class AuthGuard implements CanActivate {
   constructor(
     private _router: Router,
-    private _store: Store<AppStoreState>,
-    private _authService: AuthService
+    private _store: Store<AppStoreState>
   ) { }
 
   canActivate(): Observable<boolean | UrlTree> {

@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable, of } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { User } from '../interfaces/user';
+import { User } from '../../interfaces/user';
 import { environment } from 'src/environments/environment';
 import { HttpClient } from '@angular/common/http';
 
