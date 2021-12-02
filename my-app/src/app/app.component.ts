@@ -14,6 +14,10 @@ export class AppComponent implements OnInit {
   constructor(private _store: Store<AppStoreState>, private _router: Router) {}
 
   ngOnInit(): void {
+    this.initUser();
+  }
+
+  initUser(): void {
     const token = localStorage.getItem('token');
     this._router.navigateByUrl('/login');
     if (token) {

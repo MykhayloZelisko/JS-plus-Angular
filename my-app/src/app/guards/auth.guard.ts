@@ -19,7 +19,6 @@ export class AuthGuard implements CanActivate {
   canActivate(): Observable<boolean | UrlTree> {
     return this._store.select(selectUser).pipe(
       map( (user: User) => {
-        console.log(user);
         return user ? true : this._router.parseUrl('/login');
       })
     );

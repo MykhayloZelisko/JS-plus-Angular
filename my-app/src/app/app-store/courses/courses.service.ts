@@ -4,7 +4,7 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { map, switchMap, take } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
-import { Course, CourseData } from '../interfaces/course';
+import { Course, CourseData } from '../../interfaces/course';
 
 @Injectable({
   providedIn: 'root'

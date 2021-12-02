@@ -1,11 +1,15 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ConfigDeleteCourse, Course } from 'src/app/interfaces/course';
-import { CoursesService } from 'src/app/services/courses.service';
-import { HttpParams } from '@angular/common/http';
+import { CoursesService } from 'src/app/app-store/courses/courses.service';
 import { LoadingService } from 'src/app/services/loading.service';
 import { debounceTime, finalize } from 'rxjs/operators';
 import { Subscription } from 'rxjs';
+import { Store } from '@ngrx/store';
+import { AppStoreState } from 'src/app/app-store/app-store.state';
+import { GetCourseList } from 'src/app/app-store/courses/courses.actions';
+import { selectCourseList } from 'src/app/app-store/courses/courses.selectors';
+import { HttpParams } from 'src/app/interfaces/http-params';
 
 @Component({
   selector: 'app-courses',
@@ -17,7 +21,6 @@ export class CoursesComponent implements OnInit, OnDestroy {
   public confirmDialogConfig: ConfigDeleteCourse = { isVisible: false, id: null, title: null };
   public filterSub: Subscription;
   public deleteCourseSub: Subscription;
-  public getCourseListSub: Subscription;
   private start = 0;
   private count = +'5';
   private textFragment = '';
@@ -26,7 +29,8 @@ export class CoursesComponent implements OnInit, OnDestroy {
   constructor(
     private _coursesService: CoursesService,
     private _router: Router,
-    private _loadingService: LoadingService
+    private _loadingService: LoadingService,
+    private _store: Store<AppStoreState>
   ) { }
 
   ngOnInit(): void {
@@ -36,7 +40,6 @@ export class CoursesComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.filterSub && this.filterSub.unsubscribe();
     this.deleteCourseSub && this.deleteCourseSub.unsubscribe();
-    this.getCourseListSub && this.getCourseListSub.unsubscribe();
   }
 
   trackByIndex(index: number): number {
@@ -67,6 +70,11 @@ export class CoursesComponent implements OnInit, OnDestroy {
           this.coursesList = [];
           this.textFragment = value;
           this.getCourseList(this.getParams() );
+          this._store.select(selectCourseList).subscribe(
+            (list: Course[] ) => {
+              this.coursesList = list;
+            }
+          );
         }
       }
     );
@@ -82,6 +90,7 @@ export class CoursesComponent implements OnInit, OnDestroy {
   }
 
   deleteCourse(): void {
+    this.start = 0;
     this.coursesList = [];
     const id = this.confirmDialogConfig.id;
     this._loadingService.toggle();
@@ -97,22 +106,15 @@ export class CoursesComponent implements OnInit, OnDestroy {
   }
 
   getCourseList(params?: HttpParams): void {
-    this.start = 0;
-    this._loadingService.toggle();
-    this.getCourseListSub = this._coursesService.getCourseList(params).pipe(
-      finalize( () => this._loadingService.toggle() )
-    ).subscribe(
-      (list: Course[] ) => {
-        this.coursesList.push(...list);
-      }
-    );
+    this._store.dispatch(new GetCourseList(params) );
   }
 
   private getParams(): HttpParams {
-    return new HttpParams()
-      .set('start', this.start)
-      .set('count', this.count)
-      .set('textFragment', this.textFragment)
-      .set('sort', this.sort);
+    return {
+      start: this.start,
+      count: this.count,
+      textFragment: this.textFragment,
+      sort: this.sort
+    };
   }
 }
