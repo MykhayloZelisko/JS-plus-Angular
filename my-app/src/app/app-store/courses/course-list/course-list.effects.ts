@@ -25,5 +25,8 @@ export class CourseListEffects {
     );
   });
 
-  constructor(private _actions$: Actions, private _courseService: CoursesService) {}
+  constructor(
+    private _actions$: Actions,
+    private _courseService: CoursesService
+  ) {}
 }

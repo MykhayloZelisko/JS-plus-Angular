@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
-import { LoadingService } from 'src/app/services/loading.service';
+import { AppStoreState } from 'src/app/app-store/app-store.state';
+import { selectShow } from 'src/app/app-store/loader/loader.selector';
 
 @Component({
   selector: 'app-loading-spinner',
@@ -10,10 +12,10 @@ import { LoadingService } from 'src/app/services/loading.service';
 export class LoadingSpinnerComponent implements OnInit {
   public show: Observable<boolean>;
 
-  constructor(private _loadingService: LoadingService) { }
+  constructor(private _store: Store<AppStoreState>) { }
 
   ngOnInit(): void {
-    this.show = this._loadingService.show;
+    this.show = this._store.select(selectShow);
   }
 
 }
