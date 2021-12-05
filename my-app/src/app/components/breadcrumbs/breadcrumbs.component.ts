@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Event, NavigationEnd, Router } from '@angular/router';
-import { CoursesService } from 'src/app/services/courses.service';
+import { CoursesService } from 'src/app/app-store/courses/courses.service';
 import { filter, take } from 'rxjs/operators';
 import { Subscription } from 'rxjs';
 import { Course } from 'src/app/interfaces/course';

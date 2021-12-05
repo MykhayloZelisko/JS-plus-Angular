@@ -1,12 +1,11 @@
 /* eslint-disable no-unused-vars */
 import { Course } from 'src/app/interfaces/course';
-import { HttpParams } from 'src/app/interfaces/http-params';
-import { CourseListAction, CourseListActionType } from './courses.models';
+import { CourseListAction, CourseListActionType } from './course-list.models';
 
 export class GetCourseList implements CourseListAction {
   public readonly type: CourseListActionType = CourseListActionType.getCourseList;
 
-  constructor(public params?: HttpParams) {}
+  constructor(public params?: { start: number, count: number, textFragment: string, sort: string}) {}
 }
 
 export class GetCourseListSuccess implements CourseListAction {
@@ -21,5 +20,10 @@ export class GetCourseListFail implements CourseListAction {
   constructor() {}
 }
 
+export class ClearCourseList implements CourseListAction {
+  public readonly type: CourseListActionType = CourseListActionType.clearCourseList
+
+  constructor() {}
+}
 
 

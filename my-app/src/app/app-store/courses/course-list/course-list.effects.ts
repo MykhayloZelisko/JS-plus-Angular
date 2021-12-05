@@ -3,9 +3,9 @@ import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Observable, of } from 'rxjs';
 import { catchError, map, switchMap } from 'rxjs/operators';
 import { Course } from 'src/app/interfaces/course';
-import { GetCourseList, GetCourseListFail, GetCourseListSuccess } from './courses.actions';
-import { CourseListActionType } from './courses.models';
-import { CoursesService } from './courses.service';
+import { GetCourseList, GetCourseListFail, GetCourseListSuccess } from './course-list.actions';
+import { CourseListActionType } from './course-list.models';
+import { CoursesService } from '../courses.service';
 
 @Injectable()
 

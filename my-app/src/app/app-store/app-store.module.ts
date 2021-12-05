@@ -2,8 +2,11 @@ import { NgModule } from '@angular/core';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
-import { CourseListEffects } from './courses/courses.effects';
-import { courseListReducer } from './courses/courses.reducer';
+import { CourseListEffects } from './courses/course-list/course-list.effects';
+import { courseListReducer } from './courses/course-list/course-list.reducer';
+import { CourseEffects } from './courses/course/course.effects';
+import { courseReducer } from './courses/course/course.reducer';
+import { paramsReducer } from './params/params.reducer';
 import { AuthService } from './user/auth.service';
 import { UserEffects } from './user/user.effects';
 import { userReducer } from './user/user.reducer';
@@ -14,11 +17,14 @@ import { userReducer } from './user/user.reducer';
   imports: [
     StoreModule.forRoot({
       user: userReducer,
-      courseList: courseListReducer
+      courseList: courseListReducer,
+      params: paramsReducer,
+      course: courseReducer
     }),
     EffectsModule.forRoot( [
       UserEffects,
-      CourseListEffects
+      CourseListEffects,
+      CourseEffects
     ] ),
     StoreDevtoolsModule.instrument({
       maxAge: 50

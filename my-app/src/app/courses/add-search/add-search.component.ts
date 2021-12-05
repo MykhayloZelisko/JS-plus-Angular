@@ -1,6 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Output } from '@angular/core';
 import { Router } from '@angular/router';
-import { CoursesService } from 'src/app/services/courses.service';
+import { Store } from '@ngrx/store';
+import { AppStoreState } from 'src/app/app-store/app-store.state';
+import { ClearCourseList } from 'src/app/app-store/courses/course-list/course-list.actions';
 
 @Component({
   selector: 'app-add-search',
@@ -8,15 +10,17 @@ import { CoursesService } from 'src/app/services/courses.service';
   styleUrls: ['./add-search.component.scss']
 })
 export class AddSearchComponent {
+  @Output() public onSearch: EventEmitter<string> = new EventEmitter();
   public value = '';
 
   constructor(
     private _router: Router,
-    private _coursesService: CoursesService
+    private _store: Store<AppStoreState>
   ) { }
 
   search(): void {
-    this._coursesService.searchValue.next(this.value);
+    this._store.dispatch(new ClearCourseList() );
+    this.onSearch.emit(this.value);
   }
 
   newCourse(): void {

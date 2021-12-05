@@ -6,7 +6,8 @@ import { HttpParams } from 'src/app/interfaces/http-params';
 export enum CourseListActionType {
   getCourseList = 'getCourseList',
   getCourseListSuccess = 'getCourseListSuccess',
-  getCourseListFail = 'getCourseListFail'
+  getCourseListFail = 'getCourseListFail',
+  clearCourseList = 'clearCourseList'
 }
 
 export interface CourseListAction extends Action {

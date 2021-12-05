@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { Observable } from 'rxjs';
 import { map, switchMap, take } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 import { Course, CourseData } from '../../interfaces/course';
@@ -10,7 +10,6 @@ import { Course, CourseData } from '../../interfaces/course';
   providedIn: 'root'
 })
 export class CoursesService {
-  public searchValue: BehaviorSubject<string> = new BehaviorSubject('');
   private apiUrl = environment.apiUrl;
 
   constructor(private _http: HttpClient) { }
