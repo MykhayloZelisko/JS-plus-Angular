@@ -7,9 +7,7 @@ export enum UserActionType {
   loginSuccess = 'loginSuccess',
   loginFail = 'loginFail',
   logout = 'logout',
-  updateUserInfo = 'userInfo',
-  navigateTo = 'navigateTo',
-  getUserFail = 'getUserFail'
+  updateUserInfo = 'userInfo'
 }
 
 export interface UserAction extends Action {

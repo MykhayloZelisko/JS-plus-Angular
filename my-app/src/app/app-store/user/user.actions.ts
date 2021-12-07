@@ -31,15 +31,3 @@ export class UpdateUserInfo implements UserAction {
 
   constructor(public user: User) {}
 }
-
-export class NavigateTo implements UserAction {
-  public readonly type: UserActionType = UserActionType.navigateTo;
-
-  constructor() {}
-}
-
-export class GetUserFail implements UserAction {
-  public readonly type: UserActionType = UserActionType.getUserFail;
-
-  constructor() {}
-}
