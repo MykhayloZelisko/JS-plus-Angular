@@ -43,6 +43,7 @@ export class CoursesComponent implements OnInit, OnDestroy {
   }
 
   initCoursesPage(): void {
+    this._store.dispatch(new ClearCourseList() );
     this._store.dispatch(new UpdateParams({
       count: this.count,
       sort: this.sort
