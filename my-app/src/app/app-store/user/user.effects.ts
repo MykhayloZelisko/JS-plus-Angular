@@ -40,20 +40,16 @@ export class UserEffects {
       ofType(UserActionType.loginSuccess),
       tap( (action: LoginSuccess) => {
         localStorage.setItem('token', action.token);
-      }),
-      tap( () => {
         this._store.dispatch(new ToggleLoader() );
       }),
       switchMap( () => {
         return this._authService.getUserInfo();
       }),
-      tap( () => {
-        this._store.dispatch(new ToggleLoader() );
-      }),
       map( (user: User) => {
         return new UpdateUserInfo(user);
       }),
       tap( () => {
+        this._store.dispatch(new ToggleLoader() );
         this._router.navigateByUrl('/courses');
       })
     );
