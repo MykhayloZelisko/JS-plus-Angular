@@ -1,7 +1,9 @@
 import { Directive, OnDestroy, OnInit, TemplateRef, ViewContainerRef } from '@angular/core';
+import { Store } from '@ngrx/store';
 import { Subscription } from 'rxjs';
+import { AppStoreState } from '../app-store/app-store.state';
+import { selectUser } from '../app-store/user/user.selectors';
 import { User } from '../interfaces/user';
-import { AuthService } from '../services/auth.service';
 
 @Directive({
   selector: '[ifAuthenticated]'
@@ -12,7 +14,7 @@ export class IfAuthenticatedDirective implements OnInit, OnDestroy {
   constructor(
     private _templateRef: TemplateRef<unknown>,
     private _viewContainer: ViewContainerRef,
-    private _authService: AuthService
+    private _store: Store<AppStoreState>
   ) { }
 
   ngOnInit(): void {
@@ -24,7 +26,7 @@ export class IfAuthenticatedDirective implements OnInit, OnDestroy {
   }
 
   private isAuthenticated(): void {
-    this.userSub = this._authService.userInfo.subscribe(
+    this.userSub = this._store.select(selectUser).subscribe(
       (user: User) => {
         if (!user) {
           this._viewContainer.clear();

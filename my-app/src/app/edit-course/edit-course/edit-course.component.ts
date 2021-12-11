@@ -2,10 +2,14 @@ import { Location } from '@angular/common';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
-import { finalize } from 'rxjs/operators';
 import { Course, CourseData } from 'src/app/interfaces/course';
-import { CoursesService } from 'src/app/services/courses.service';
-import { LoadingService } from 'src/app/services/loading.service';
+import { Store } from '@ngrx/store';
+import { AppStoreState } from 'src/app/app-store/app-store.state';
+import { selectCourse } from 'src/app/app-store/courses/course/course.selectors';
+import { UpdateCourse } from 'src/app/app-store/courses/course/course.actions';
+import { ClearCourseList } from 'src/app/app-store/courses/course-list/course-list.actions';
+import { UpdateParams } from 'src/app/app-store/params/params.actions';
+import { HttpParams } from 'src/app/interfaces/http-params';
 
 @Component({
   selector: 'app-edit-course',
@@ -25,10 +29,9 @@ export class EditCourseComponent implements OnInit, OnDestroy {
   public updateCourseSub: Subscription;
 
   constructor(
-    private _coursesService: CoursesService,
     private _location: Location,
     private _activatedRoute: ActivatedRoute,
-    private _loadingService: LoadingService
+    private _store: Store<AppStoreState>
   ) { }
 
   ngOnInit(): void {
@@ -45,17 +48,18 @@ export class EditCourseComponent implements OnInit, OnDestroy {
   }
 
   saveCourse(data: CourseData): void {
-    this._loadingService.toggle();
-    this.updateCourseSub = this._coursesService.updateCourse(this.id, data).pipe(
-      finalize( () => this._loadingService.toggle() ),
-    ).subscribe();
+    this._store.dispatch(new UpdateCourse(this.id, data) );
+    this._store.dispatch(new ClearCourseList() );
+    this._store.dispatch(new UpdateParams({ start: 0 } as HttpParams) );
     this._location.back();
   }
 
   initPageConfiguration(): void {
-    this.getCourseSub = this._coursesService.getCourse(this.id).subscribe(
-      (res: Course) => {
-        this.data = res;
+    this.getCourseSub = this._store.select(selectCourse).subscribe(
+      (course: Course) => {
+        if(course) {
+          this.data = { ...course, authors: [...course.authors] };
+        }
       }
     );
   }

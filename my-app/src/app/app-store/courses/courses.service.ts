@@ -1,21 +1,20 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { Observable } from 'rxjs';
 import { map, switchMap, take } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
-import { Course, CourseData } from '../interfaces/course';
+import { Course, CourseData } from '../../interfaces/course';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CoursesService {
-  public searchValue: BehaviorSubject<string> = new BehaviorSubject('');
   private apiUrl = environment.apiUrl;
 
   constructor(private _http: HttpClient) { }
 
-  getCourseList(params?: HttpParams): Observable<Course[]> {
+  getCourseList(params?: { start: number, count: number, textFragment: string, sort: string }): Observable<Course[]> {
     return this._http.get<Course[]>(`${this.apiUrl}/courses`, { params }).pipe(
       map( (list: any[] ) => list.map( (item: any) => this.courseMap(item) ) )
     );

@@ -1,9 +1,9 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { BehaviorSubject, Observable, of } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { User } from '../interfaces/user';
+import { User } from '../../interfaces/user';
 import { environment } from 'src/environments/environment';
 import { HttpClient } from '@angular/common/http';
 
@@ -11,7 +11,6 @@ import { HttpClient } from '@angular/common/http';
   providedIn: 'root'
 })
 export class AuthService {
-  public userInfo: BehaviorSubject<User> = new BehaviorSubject(null);
   private apiUrl = `${environment.apiUrl}/auth`;
 
   constructor(
@@ -26,7 +25,6 @@ export class AuthService {
   logout(): void {
     localStorage.removeItem('token');
     this._router.navigateByUrl('/login');
-    this.userInfo.next(null);
   }
 
   isAuthenticated(): boolean {
