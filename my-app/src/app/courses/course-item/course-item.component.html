@@ -1,16 +1,16 @@
 <div class="course-info">
-  <h2 class="course-title">{{course.title | uppercase}} <span class="material-icons course-rating" *ngIf="course.topRated">grade</span></h2>
-  <p class="course-text">{{course.description}}</p>
+  <h2 class="course-title">{{course?.title | uppercase}} <span class="material-icons course-rating" *ngIf="course?.topRated">grade</span></h2>
+  <p class="course-text">{{course?.description}}</p>
 </div>
 <div class="course-time-btns">
   <div class="course-time">
     <div class="course-duration">
       <span class="material-icons icon">access_time</span>
-      <span>{{course.duration | duration}}</span>
+      <span>{{course?.duration | duration}}</span>
     </div>
     <div class="course-duration">
       <span class="material-icons icon">calendar_today</span>
-      <span>{{course.creationDate | date: 'dd MMM y'}}</span>
+      <span>{{course?.creationDate | date: 'dd MMM y'}}</span>
     </div>
   </div>
   <div class="btns-wrapper">

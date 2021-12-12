@@ -4,7 +4,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { map, switchMap, take } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
-import { Course, CourseData } from '../../interfaces/course';
+import { Course, CourseAuthor, CourseData } from '../../interfaces/course';
 
 @Injectable({
   providedIn: 'root'
@@ -29,11 +29,19 @@ export class CoursesService {
           name: data.title,
           description: data.description,
           date: data.creationDate,
-          authors: [{}],
+          authors: data.authors.map( (author: CourseAuthor) => {
+            return {
+              id: author.id,
+              name: author.name.split(' ')[0],
+              lastName: author.name.split(' ')[1],
+            };
+          }),
           length: data.duration,
           isTopRated: false
         };
-        return this._http.post(`${this.apiUrl}/courses`, newFormatData);
+        return this._http.post(`${this.apiUrl}/courses`, newFormatData).pipe(
+          take(1)
+        );
       })
     );
   }
@@ -49,7 +57,13 @@ export class CoursesService {
       name: data.title,
       description: data.description,
       date: data.creationDate,
-      authors: data.authors,
+      authors: data.authors.map( (author: CourseAuthor) => {
+        return {
+          id: author.id,
+          name: author.name.split(' ')[0],
+          lastName: author.name.split(' ')[1],
+        };
+      }),
       length: data.duration
     };
     return this._http.patch(`${this.apiUrl}/courses/${id}`, newFormatData).pipe(
@@ -72,7 +86,7 @@ export class CoursesService {
       creationDate: item.date,
       authors: item.authors.map( (author: any) => ({
         id: author.id,
-        name: author.name
+        name: author.name + ' ' + author.lastName
       }) ),
       duration: item.length
     };

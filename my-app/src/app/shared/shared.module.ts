@@ -5,7 +5,8 @@ import { CourseFormComponent } from './course-form/course-form.component';
 import { CourseDateComponent } from './course-date/course-date.component';
 import { CourseDurationComponent } from './course-duration/course-duration.component';
 import { CourseAuthorsComponent } from './course-authors/course-authors.component';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MaterialModule } from '../material/material.module';
 
 @NgModule({
   declarations: [
@@ -17,14 +18,17 @@ import { FormsModule } from '@angular/forms';
   ],
   imports: [
     CommonModule,
-    FormsModule
+    FormsModule,
+    ReactiveFormsModule,
+    MaterialModule
   ],
   exports: [
     DurationPipe,
     CourseFormComponent,
     CourseDateComponent,
     CourseDurationComponent,
-    CourseAuthorsComponent
+    CourseAuthorsComponent,
+    MaterialModule
   ]
 })
 export class SharedModule { }

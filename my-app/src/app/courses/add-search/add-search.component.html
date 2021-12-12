@@ -1,11 +1,13 @@
 <div class="container">
   <div class="search-wrapper">
-    <input
-      type="text"
-      class="search-text"
-      placeholder="Text to search"
-      [(ngModel)]="value"
-      (keyup)="search()">
+    <form [formGroup]="searchForm">
+      <input
+        formControlName="search"
+        type="text"
+        class="search-text"
+        placeholder="Text to search"
+        (keyup)="search()">
+    </form>
   </div>
   <div class="add-btn-wrapper">
     <button class="add-btn" (click)="newCourse()"><span class="material-icons add-btn-icon">add_circle_outline</span>Add course</button>

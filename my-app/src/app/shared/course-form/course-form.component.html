@@ -1,33 +1,44 @@
 <div class="course">
-  <div class="course-field">
-    <label class="course-label" for="#title">Title:</label>
+  <form [formGroup]="courseForm">
+    <div class="course-field">
+    <label class="course-label" for="#title">Title: </label>
+    <span  class="error" *ngIf="isControlInvalid('title')">{{titleMessage}}</span>
     <input
+      formControlName="title"
       type="text"
       class="course-input"
       name="title"
-      placeholder="Text input"
-      [(ngModel)]="data.title">
-  </div>
-  <div class="course-field">
-    <label class="course-label" for="#description">Description:</label>
-    <textarea
-      class="course-description"
-      name="description"
-      placeholder="Add description"
-      [(ngModel)]="data.description">
-    </textarea>
-  </div>
-  <app-course-date
-    [creationDate]="data.creationDate"
-    (setDateEvent)="setDate($event)">
-  </app-course-date>
-  <app-course-duration
-    [duration]="data.duration"
-    (setDurationEvent)="setDuration($event)">
-  </app-course-duration>
-  <app-course-authors></app-course-authors>
-  <div class="buttons">
-    <button class="btn btn-cancel" (click)="cancel()">Cancel</button>
-    <button class="btn btn-save" (click)="saveCourse()">Save</button>
-  </div>
+      placeholder="Text input">
+    </div>
+    <div class="course-field">
+      <label class="course-label" for="#description">Description: </label>
+      <span  class="error" *ngIf="isControlInvalid('description')">{{descriptionMessage}}</span>
+      <textarea
+        formControlName="description"
+        class="course-description"
+        name="description"
+        placeholder="Add description">
+      </textarea>
+    </div>
+    <app-course-date
+      formControlName="creationDate">
+    </app-course-date>
+    <app-course-duration
+      formControlName="duration">
+    </app-course-duration>
+    <app-course-authors
+      formControlName="authors">
+    </app-course-authors>
+    <div class="buttons">
+      <button
+        class="btn btn-cancel"
+        (click)="cancel()"
+      >Cancel</button>
+      <button
+        class="btn btn-save"
+        (click)="saveCourse()"
+        [disabled]="courseForm.invalid"
+      >Save</button>
+    </div>
+  </form>
 </div>

@@ -19,6 +19,7 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { ApplyTokenInterceptor } from './interceptors/apply-token.interceptor';
 import { LoadingSpinnerComponent } from './components/loading-spinner/loading-spinner.component';
 import { AppStoreModule } from './app-store/app-store.module';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @NgModule({
   declarations: [
@@ -40,7 +41,8 @@ import { AppStoreModule } from './app-store/app-store.module';
     NewCourseModule,
     EditCourseModule,
     HttpClientModule,
-    AppStoreModule
+    AppStoreModule,
+    BrowserAnimationsModule
   ],
   providers: [
     AuthGuard,
