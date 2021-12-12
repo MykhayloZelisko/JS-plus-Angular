@@ -1,5 +1,5 @@
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
-import { Component, ElementRef, ViewChild } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import {
   ControlValueAccessor,
   FormControl,
@@ -11,7 +11,7 @@ import {
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { MatChipInputEvent } from '@angular/material/chips';
 import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { switchMap } from 'rxjs/operators';
 import { AuthorsService } from 'src/app/app-store/authors/authors.service';
 import { CourseAuthor } from 'src/app/interfaces/course';
 
@@ -32,7 +32,7 @@ import { CourseAuthor } from 'src/app/interfaces/course';
     }
   ]
 })
-export class CourseAuthorsComponent implements ControlValueAccessor, Validator {
+export class CourseAuthorsComponent implements ControlValueAccessor, Validator, OnInit {
   public separatorKeysCodes: number[] = [ENTER, COMMA];
   public authorCtrl = new FormControl();
   public filteredAuthors: Observable<CourseAuthor[]>;
@@ -45,10 +45,17 @@ export class CourseAuthorsComponent implements ControlValueAccessor, Validator {
 
   @ViewChild('authorInput') authorInput: ElementRef<HTMLInputElement>;
 
-  constructor(private _authorsService: AuthorsService) {
+  constructor(private _authorsService: AuthorsService) {}
+
+  ngOnInit(): void {
+    this.initAuthorsList();
+  }
+
+  initAuthorsList(): void {
     this.filteredAuthors = this.authorCtrl.valueChanges.pipe(
-      // startWith(null),
-      map( (author: CourseAuthor) => (author.name ? this._filter(author.name) : this.allAuthors.slice() ) ),
+      switchMap( (value: string) => {
+        return this._authorsService.getAuthors(value);
+      })
     );
 
     this._authorsService.getAuthors('').subscribe(
@@ -82,12 +89,6 @@ export class CourseAuthorsComponent implements ControlValueAccessor, Validator {
     const author = this.allAuthors.find( (author: CourseAuthor) => author.name === event.option.viewValue);
     this.authors.push(author);
     this.authorInput.nativeElement.value = '';
-  }
-
-  private _filter(value: string): CourseAuthor[] {
-    const filterValue = value.toLowerCase();
-
-    return this.allAuthors.filter(author => author.name.toLowerCase().includes(filterValue) );
   }
 
   setAuthors(): void {

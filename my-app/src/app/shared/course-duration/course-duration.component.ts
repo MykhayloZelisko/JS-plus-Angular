@@ -47,12 +47,12 @@ export class CourseDurationComponent implements ControlValueAccessor, Validator 
   registerOnTouched(fn: () => void): void {
     this.onTouched = fn;
   }
-  
+
   validate(control: AbstractControl) : ValidationErrors | null {
     const regexp = RegExp(/^[1-9]{1}[0-9]*$/);
     if (!control.value || !control.value.toString().match(regexp) ) {
       this.isInvalid = true;
-      return { 'dateInvalid': true };
+      return { 'durationInvalid': true };
     }
     this.isInvalid = false;
     return null;
