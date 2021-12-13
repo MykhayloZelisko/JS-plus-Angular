@@ -17,13 +17,7 @@ import { HttpParams } from 'src/app/interfaces/http-params';
   styleUrls: ['./edit-course.component.scss']
 })
 export class EditCourseComponent implements OnInit, OnDestroy {
-  public data: CourseData = {
-    title: null,
-    creationDate: null,
-    duration: null,
-    description: null,
-    authors: []
-  };
+  public data: CourseData;
   public id = +this._activatedRoute.snapshot.paramMap.get('id');
   public getCourseSub: Subscription;
   public updateCourseSub: Subscription;
@@ -58,7 +52,13 @@ export class EditCourseComponent implements OnInit, OnDestroy {
     this.getCourseSub = this._store.select(selectCourse).subscribe(
       (course: Course) => {
         if(course) {
-          this.data = { ...course, authors: [...course.authors] };
+          this.data = {
+            title: course.title,
+            description: course.description,
+            creationDate: course.creationDate,
+            duration: course.duration,
+            authors: [...course.authors]
+          };
         }
       }
     );

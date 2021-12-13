@@ -1,8 +1,10 @@
 <div class="course-date">
-  <label class="course-label" for="#creationDate">Date:</label>
+  <label class="course-label" for="#creationDate">Date: </label>
+  <span class="error" *ngIf="isInvalid">Date should be formatted as MM/DD/YYYY</span>
   <input
     [(ngModel)]="creationDate"
-    (change)="setDate()"
+    [ngClass]="{'invalid': isInvalid}"
+    (keyup)="setDate()"
     name="creationeDate"
     type="text"
     class="course-input"

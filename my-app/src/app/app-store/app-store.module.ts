@@ -1,11 +1,13 @@
 import { NgModule } from '@angular/core';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
+import { AuthorsService } from './authors/authors.service';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { CourseListEffects } from './courses/course-list/course-list.effects';
 import { courseListReducer } from './courses/course-list/course-list.reducer';
 import { CourseEffects } from './courses/course/course.effects';
 import { courseReducer } from './courses/course/course.reducer';
+import { CoursesService } from './courses/courses.service';
 import { loaderReducer } from './loader/loader.reducer';
 import { paramsReducer } from './params/params.reducer';
 import { AuthService } from './user/auth.service';
@@ -33,7 +35,9 @@ import { userReducer } from './user/user.reducer';
     })
   ],
   providers: [
-    AuthService
+    AuthService,
+    CoursesService,
+    AuthorsService
   ]
 })
 export class AppStoreModule { }

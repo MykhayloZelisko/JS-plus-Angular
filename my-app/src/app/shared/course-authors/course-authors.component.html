@@ -1,4 +1,36 @@
 <div class="course-authors">
-  <label class="course-label" for="#authors">Authors:</label>
-  <input type="text" class="course-input" name="authors" id="authors" placeholder="Start typing">
+  <mat-form-field class="example-chip-list" appearance="outline">
+    <mat-label>Authors: </mat-label>
+    <mat-chip-list #chipList aria-label="Author selection">
+      <mat-chip
+        *ngFor="let author of authors"
+        (removed)="remove(author)">
+        {{author.name}}
+        <button matChipRemove>
+          <mat-icon>cancel</mat-icon>
+        </button>
+      </mat-chip>
+      <input
+        placeholder="Start typing"
+        #authorInput
+        [formControl]="authorCtrl"
+        [matAutocomplete]="auto"
+        [matChipInputFor]="chipList"
+        [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+        (matChipInputTokenEnd)="add($event)">
+    </mat-chip-list>
+    <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)">
+      <mat-option *ngFor="let author of filteredAuthors | async" [value]="author">
+        {{author.name}}
+      </mat-option>
+    </mat-autocomplete>
+  </mat-form-field>
 </div>
+
+
+
+
+
+
+<!-- <label class="course-label" for="#authors">Authors:</label>
+  <input type="text" class="course-input" name="authors" id="authors" placeholder="Start typing"> -->

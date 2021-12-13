@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CoursesComponent } from './courses/courses.component';
 import { AddSearchComponent } from './add-search/add-search.component';
 import { CourseItemComponent } from './course-item/course-item.component';
@@ -21,7 +21,8 @@ import { CustomRouteReuseStrategy } from './custom-route-reuse-strategy';
     CommonModule,
     FormsModule,
     SharedModule,
-    CoursesRoutingModule
+    CoursesRoutingModule,
+    ReactiveFormsModule
   ],
   providers: [
     {

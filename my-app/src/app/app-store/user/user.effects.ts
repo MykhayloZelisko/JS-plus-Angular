@@ -17,14 +17,8 @@ export class UserEffects {
   public login$: Observable<LoginSuccess | LoginFail> = createEffect( () => {
     return this._actions$.pipe(
       ofType(UserActionType.login),
-      tap( () => {
-        this._store.dispatch(new ToggleLoader() );
-      }),
       switchMap( (action: Login) => {
         return this._authService.login(action.login, action.password);
-      }),
-      tap( () => {
-        this._store.dispatch(new ToggleLoader() );
       }),
       map( (res: {token: string}) => {
         return new LoginSuccess(res.token);

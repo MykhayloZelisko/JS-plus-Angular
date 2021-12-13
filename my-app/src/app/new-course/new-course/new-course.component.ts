@@ -48,7 +48,7 @@ export class NewCourseComponent implements OnInit, OnDestroy {
       creationDate: null,
       duration: null,
       description: null,
-      authors: [{ id: null, name: null }]
+      authors: []
     };
   }
 }

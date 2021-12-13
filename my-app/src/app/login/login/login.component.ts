@@ -1,4 +1,5 @@
-import { Component, ElementRef, ViewChild } from '@angular/core';
+import { Component } from '@angular/core';
+import { FormBuilder, Validators } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import { AppStoreState } from 'src/app/app-store/app-store.state';
 import { Login } from 'src/app/app-store/user/user.actions';
@@ -9,16 +10,30 @@ import { Login } from 'src/app/app-store/user/user.actions';
   styleUrls: ['./login.component.scss']
 })
 export class LoginComponent {
-  @ViewChild('loginField') loginField: ElementRef;
-  @ViewChild('passwordField') passwordField: ElementRef;
+  public loginForm = this._fb.group({
+    login: [
+      '',
+      Validators.required
+    ],
+    password: [
+      '',
+      Validators.required
+    ]
+  })
 
   constructor(
-    private _store: Store<AppStoreState>
+    private _store: Store<AppStoreState>,
+    private _fb: FormBuilder
   ) { }
 
   login():void {
-    const login = this.loginField.nativeElement.value;
-    const password = this.passwordField.nativeElement.value;
+    const { login, password } = this.loginForm.getRawValue();
     this._store.dispatch(new Login(login, password) );
+  }
+
+  isControlInvalid(controlName: string): boolean {
+    const control = this.loginForm.controls[controlName];
+    const result = control.invalid && control.dirty;
+    return result;
   }
 }

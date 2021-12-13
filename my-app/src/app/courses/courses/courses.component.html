@@ -6,8 +6,8 @@
     <div *ngFor="let course of coursesList; trackBy: trackByIndex">
       <app-course-item
         class="course"
-        [newCourse]="course.creationDate"
-        [ngClass]="{'top-rated': course.topRated}"
+        [newCourse]="course?.creationDate"
+        [ngClass]="{'top-rated': course?.topRated}"
         [course]="course"
         (delete)="openConfirmDialog($event)"
         (edit)="editCourse($event)">

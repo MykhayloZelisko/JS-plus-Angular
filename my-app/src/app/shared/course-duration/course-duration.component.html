@@ -1,13 +1,17 @@
 <div class="course-duration-wrapper">
   <div class="course-duration">
-    <label class="course-label" for="#duration">Duration:</label>
+    <div>
+      <label class="course-label" for="#duration">Duration: </label>
+      <span class="error" *ngIf="isInvalid">Duration should be a number</span>
+    </div>
     <input
       type="text"
       class="course-input"
       name="duration"
       [(ngModel)]="duration"
-      (change)="setDuration()"
+      [ngClass]="isInvalid ? 'invalid' : 'course-input'"
+      (keyup)="setDuration()"
       placeholder="Minutes">
+      <span class="course-span">{{duration | duration}}</span>
   </div>
-  <span class="course-span">{{duration | duration}}</span>
 </div>
